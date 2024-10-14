@@ -1,0 +1,23 @@
+type Factory {
+  id: ID!
+  address: String!
+  admins: [String!]!
+}
+
+type ContestTemplate {
+  id: ID!
+  contestVersion: String!
+  contestAddress: String!
+  mdProtocol: BigInt!
+  mdPointer: String!
+  active: Boolean!
+}
+
+type ModuleTemplate {
+  id: ID!
+  moduleName: String!
+  templateAddress: String!
+  mdProtocol: BigInt!
+  mdPointer: String!
+  active: Boolean!
+}

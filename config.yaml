@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+name: ask-arb-envio
+networks:
+- id: 42161
+  start_block: 0
+  contracts:
+  - name: FastFactory
+    address:
+    - 0x72429C2392d79458c411BC5DecEb8cCd28530BF0
+    handler: src/EventHandlers.ts
+    events:
+    - event: AdminAdded(address admin)
+    - event: AdminRemoved(address admin)
+    - event: ContestBuilt(string votesModule, string pointsModule, string choicesModule, string executionModule, address contestAddress, string contestVersion, string filterTag)
+    - event: ContestCloned(address contestAddress, string contestVersion, string filterTag)
+    - event: ContestTemplateCreated(string contestVersion, address contestAddress, (uint256,string) contestInfo)
+    - event: ContestTemplateDeleted(string contestVersion, address contestAddress)
+    - event: FactoryInitialized(address admin)
+    - event: ModuleCloned(address moduleAddress, string moduleName, string filterTag)
+    - event: ModuleTemplateCreated(string moduleName, address moduleAddress, (uint256,string) moduleInfo)
+    - event: ModuleTemplateDeleted(string moduleName, address moduleAddress)
+rollback_on_reorg: false
