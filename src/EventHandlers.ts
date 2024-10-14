@@ -3,6 +3,14 @@
  */
 import { FastFactory } from 'generated';
 
+FastFactory.FactoryInitialized.handler(async ({ event, context }) => {
+  context.Factory.set({
+    id: `factory-${event.chainId}-${event.srcAddress}`,
+    address: event.srcAddress,
+    admins: [event.params.admin],
+  });
+});
+
 FastFactory.AdminAdded.handler(async ({ event, context }) => {
   const factory = await context.Factory.get(
     `factory-${event.chainId}-${event.srcAddress}`
@@ -35,18 +43,62 @@ FastFactory.AdminRemoved.handler(async ({ event, context }) => {
   });
 });
 
-FastFactory.ContestBuilt.handler(async ({ event, context }) => {
-  // const entity: FastFactory_ContestBuilt = {
-  //   id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-  //   votesModule: event.params.votesModule,
-  //   pointsModule: event.params.pointsModule,
-  //   choicesModule: event.params.choicesModule,
-  //   executionModule: event.params.executionModule,
-  //   contestAddress: event.params.contestAddress,
-  //   contestVersion: event.params.contestVersion,
-  //   filterTag: event.params.filterTag,
-  // };
-  // context.FastFactory_ContestBuilt.set(entity);
+FastFactory.ContestTemplateCreated.handler(async ({ event, context }) => {
+  context.ContestTemplate.set({
+    id: `${event.params.contestVersion}-${event.params.contestAddress}`,
+    contestVersion: event.params.contestVersion,
+    contestAddress: event.params.contestAddress,
+    mdProtocol: event.params.contestInfo[0],
+    mdPointer: event.params.contestInfo[1],
+    active: true,
+  });
+});
+
+FastFactory.ContestTemplateDeleted.handler(async ({ event, context }) => {
+  const template = await context.ContestTemplate.get(
+    `${event.params.contestVersion}-${event.params.contestAddress}`
+  );
+
+  if (!template) {
+    context.log.error(
+      `Contest template ${event.params.contestAddress} not found`
+    );
+    return;
+  }
+
+  context.ContestTemplate.set({
+    ...template,
+    active: false,
+  });
+});
+
+FastFactory.ModuleTemplateCreated.handler(async ({ event, context }) => {
+  context.ModuleTemplate.set({
+    id: `${event.params.moduleName}-${event.params.moduleAddress}`,
+    moduleName: event.params.moduleName,
+    templateAddress: event.params.moduleAddress,
+    mdProtocol: event.params.moduleInfo[0],
+    mdPointer: event.params.moduleInfo[1],
+    active: true,
+  });
+});
+
+FastFactory.ModuleTemplateDeleted.handler(async ({ event, context }) => {
+  const template = await context.ModuleTemplate.get(
+    `${event.params.moduleName}-${event.params.moduleAddress}`
+  );
+
+  if (!template) {
+    context.log.error(
+      `Module template ${event.params.moduleAddress} not found`
+    );
+    return;
+  }
+
+  context.ModuleTemplate.set({
+    ...template,
+    active: false,
+  });
 });
 
 FastFactory.ContestCloned.handler(async ({ event, context }) => {
@@ -59,34 +111,6 @@ FastFactory.ContestCloned.handler(async ({ event, context }) => {
   // context.FastFactory_ContestCloned.set(entity);
 });
 
-FastFactory.ContestTemplateCreated.handler(async ({ event, context }) => {
-  // const entity: FastFactory_ContestTemplateCreated = {
-  //   id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-  //   contestVersion: event.params.contestVersion,
-  //   contestAddress: event.params.contestAddress,
-  //   contestInfo_0: event.params.contestInfo[0],
-  //   contestInfo_1: event.params.contestInfo[1],
-  // };
-  // context.FastFactory_ContestTemplateCreated.set(entity);
-});
-
-FastFactory.ContestTemplateDeleted.handler(async ({ event, context }) => {
-  // const entity: FastFactory_ContestTemplateDeleted = {
-  //   id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-  //   contestVersion: event.params.contestVersion,
-  //   contestAddress: event.params.contestAddress,
-  // };
-  // context.FastFactory_ContestTemplateDeleted.set(entity);
-});
-
-FastFactory.FactoryInitialized.handler(async ({ event, context }) => {
-  context.Factory.set({
-    id: `factory-${event.chainId}-${event.srcAddress}`,
-    address: event.srcAddress,
-    admins: [event.params.admin],
-  });
-});
-
 FastFactory.ModuleCloned.handler(async ({ event, context }) => {
   // const entity: FastFactory_ModuleCloned = {
   //   id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
@@ -97,22 +121,16 @@ FastFactory.ModuleCloned.handler(async ({ event, context }) => {
   // context.FastFactory_ModuleCloned.set(entity);
 });
 
-FastFactory.ModuleTemplateCreated.handler(async ({ event, context }) => {
-  // const entity: FastFactory_ModuleTemplateCreated = {
+FastFactory.ContestBuilt.handler(async ({ event, context }) => {
+  // const entity: FastFactory_ContestBuilt = {
   //   id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-  //   moduleName: event.params.moduleName,
-  //   moduleAddress: event.params.moduleAddress,
-  //   moduleInfo_0: event.params.moduleInfo[0],
-  //   moduleInfo_1: event.params.moduleInfo[1],
+  //   votesModule: event.params.votesModule,
+  //   pointsModule: event.params.pointsModule,
+  //   choicesModule: event.params.choicesModule,
+  //   executionModule: event.params.executionModule,
+  //   contestAddress: event.params.contestAddress,
+  //   contestVersion: event.params.contestVersion,
+  //   filterTag: event.params.filterTag,
   // };
-  // context.FastFactory_ModuleTemplateCreated.set(entity);
-});
-
-FastFactory.ModuleTemplateDeleted.handler(async ({ event, context }) => {
-  // const entity: FastFactory_ModuleTemplateDeleted = {
-  //   id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-  //   moduleName: event.params.moduleName,
-  //   moduleAddress: event.params.moduleAddress,
-  // };
-  // context.FastFactory_ModuleTemplateDeleted.set(entity);
+  // context.FastFactory_ContestBuilt.set(entity);
 });
