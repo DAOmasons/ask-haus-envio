@@ -20,11 +20,19 @@ FastFactory.AdminAdded.handler(async ({ event, context }) => {
 });
 
 FastFactory.AdminRemoved.handler(async ({ event, context }) => {
-  // const entity: FastFactory_AdminRemoved = {
-  //   id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-  //   admin: event.params.admin,
-  // };
-  // context.FastFactory_AdminRemoved.set(entity);
+  const factory = await context.Factory.get(
+    `factory-${event.chainId}-${event.srcAddress}`
+  );
+
+  if (!factory) {
+    context.log.error(`Factory ${event.srcAddress} not found`);
+    return;
+  }
+
+  context.Factory.set({
+    ...factory,
+    admins: factory.admins.filter((admin) => admin !== event.params.admin),
+  });
 });
 
 FastFactory.ContestBuilt.handler(async ({ event, context }) => {
