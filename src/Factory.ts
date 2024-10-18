@@ -1,7 +1,10 @@
 /*
  * Please refer to https://docs.envio.dev for a thorough guide on all Envio indexer features
  */
-import { FastFactory } from 'generated';
+import { Factory, FastFactory, TX } from 'generated';
+import { TX_t } from 'generated/src/db/Entities.gen';
+import { addTransaction } from './utils/sync';
+// import { addTransaction } from './utils/sync';
 
 FastFactory.FactoryInitialized.handler(async ({ event, context }) => {
   context.Factory.set({
@@ -102,13 +105,9 @@ FastFactory.ModuleTemplateDeleted.handler(async ({ event, context }) => {
 });
 
 FastFactory.ContestCloned.handler(async ({ event, context }) => {
-  // const entity: FastFactory_ContestCloned = {
-  //   id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-  //   contestAddress: event.params.contestAddress,
-  //   contestVersion: event.params.contestVersion,
-  //   filterTag: event.params.filterTag,
-  // };
-  // context.FastFactory_ContestCloned.set(entity);
+  // context.Factory.set(entity);
+
+  addTransaction(event, context);
 });
 
 FastFactory.ModuleCloned.handler(async ({ event, context }) => {

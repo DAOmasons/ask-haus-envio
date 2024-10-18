@@ -21,3 +21,11 @@ type ModuleTemplate {
   mdPointer: String!
   active: Boolean!
 }
+
+type TX {
+  id: ID!
+  blockNumber: BigInt!
+  srcAddress: String!
+  txHash: String!
+  timestamp: Int!
+}

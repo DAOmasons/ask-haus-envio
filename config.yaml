@@ -7,7 +7,7 @@ networks:
   - name: FastFactory
     address:
     - 0x72429C2392d79458c411BC5DecEb8cCd28530BF0
-    handler: src/EventHandlers.ts
+    handler: src/Factory.ts
     events:
     - event: AdminAdded(address admin)
     - event: AdminRemoved(address admin)
@@ -20,3 +20,9 @@ networks:
     - event: ModuleTemplateCreated(string moduleName, address moduleAddress, (uint256,string) moduleInfo)
     - event: ModuleTemplateDeleted(string moduleName, address moduleAddress)
 rollback_on_reorg: false
+field_selection:
+  transaction_fields:
+    - "from"
+    - "to"
+    - "hash"
+    - "transactionIndex"
