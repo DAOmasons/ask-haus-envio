@@ -19,6 +19,13 @@ networks:
     - event: ModuleCloned(address moduleAddress, string moduleName, string filterTag)
     - event: ModuleTemplateCreated(string moduleName, address moduleAddress, (uint256,string) moduleInfo)
     - event: ModuleTemplateDeleted(string moduleName, address moduleAddress)
+  - name: ContestBuilt
+    handler: src/Contest.ts
+    events:
+    - event: ContestInitialized((uint256,string) metadata, address votesModule, address pointsModule, address choicesModule, address executionModule, bool isContinuous, bool isRetractable, uint8 status)
+    - event: ContestStatusChanged(uint8 status)
+    - event: BatchVote(address indexed voter, bytes32[] choices, uint256[] amounts, uint256 totalAmount, (uint256,string) metadata)
+    - event: BatchRetractVote(address indexed voter, bytes32[] choices, uint256[] amounts, uint256 totalAmount, (uint256,string) metadata)
 rollback_on_reorg: false
 field_selection:
   transaction_fields:

@@ -1,10 +1,6 @@
-/*
- * Please refer to https://docs.envio.dev for a thorough guide on all Envio indexer features
- */
-import { Factory, FastFactory, TX } from 'generated';
-import { TX_t } from 'generated/src/db/Entities.gen';
+import { FastFactory } from 'generated';
 import { addTransaction } from './utils/sync';
-// import { addTransaction } from './utils/sync';
+import { moduleFactory } from './utils/dynamicIndexing';
 
 FastFactory.FactoryInitialized.handler(async ({ event, context }) => {
   context.Factory.set({
@@ -104,10 +100,15 @@ FastFactory.ModuleTemplateDeleted.handler(async ({ event, context }) => {
   });
 });
 
-FastFactory.ContestCloned.handler(async ({ event, context }) => {
-  // context.Factory.set(entity);
+FastFactory.ContestCloned.contractRegister(({ event, context }) => {
+  // context.addFastFactory(event.params.contestAddress)
+  // event.params.contestVersion;
+});
 
-  addTransaction(event, context);
+FastFactory.ContestCloned.handler(async ({ event, context }) => {
+  // // context.Factory.set(entity);
+  // moduleFactory(event, context);
+  // addTransaction(event, context);
 });
 
 FastFactory.ModuleCloned.handler(async ({ event, context }) => {
