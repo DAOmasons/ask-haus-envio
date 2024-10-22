@@ -4,13 +4,21 @@ type Factory {
   admins: [String!]!
 }
 
-type ContestTemplate {
+type RoundTemplate {
   id: ID!
-  contestVersion: String!
-  contestAddress: String!
+  roundVersion: String!
+  roundAddress: String!
   mdProtocol: BigInt!
   mdPointer: String!
   active: Boolean!
+}
+
+type RoundClone {
+  id: ID!
+  roundAddress: String!
+  roundVersion: String!
+  filterTag: String!
+  template: RoundTemplate!
 }
 
 type ModuleTemplate {
@@ -20,6 +28,30 @@ type ModuleTemplate {
   mdProtocol: BigInt!
   mdPointer: String!
   active: Boolean!
+}
+
+type ModuleClone {
+  id: ID!
+  moduleAddress: String!
+  roundAddress: String
+  contest: Round
+  moduleName: String!
+  moduleTemplate: ModuleTemplate!
+  filterTag: String!
+}
+
+type Round {
+  id: ID!
+  roundAddress: String!
+  roundVersion: String!
+  filterTag: String!
+  contestStatus: BigInt!
+  votesModule: ModuleClone!
+  pointsModule: ModuleClone!
+  executionModule: ModuleClone!
+  choicesModule: ModuleClone!
+  isContinuous: Boolean!
+  isRetractable: Boolean!
 }
 
 type TX {

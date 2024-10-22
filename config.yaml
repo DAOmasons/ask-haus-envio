@@ -19,13 +19,35 @@ networks:
     - event: ModuleCloned(address moduleAddress, string moduleName, string filterTag)
     - event: ModuleTemplateCreated(string moduleName, address moduleAddress, (uint256,string) moduleInfo)
     - event: ModuleTemplateDeleted(string moduleName, address moduleAddress)
-  - name: ContestBuilt
-    handler: src/Contest.ts
+  - name: Contest_v0_2_0
+    handler: src/Contest_v0_2_0.ts
     events:
     - event: ContestInitialized((uint256,string) metadata, address votesModule, address pointsModule, address choicesModule, address executionModule, bool isContinuous, bool isRetractable, uint8 status)
     - event: ContestStatusChanged(uint8 status)
     - event: BatchVote(address indexed voter, bytes32[] choices, uint256[] amounts, uint256 totalAmount, (uint256,string) metadata)
     - event: BatchRetractVote(address indexed voter, bytes32[] choices, uint256[] amounts, uint256 totalAmount, (uint256,string) metadata)
+  - name: TimedVotes_v0_2_0
+    handler: src/TimedVotes_v0_2_0.ts
+    events:
+    - event: Initialized(address contest, uint256 duration)
+    - event: VotingStarted(uint256 startTime, uint256 endTime)
+    - event: VoteCast(address indexed voter, bytes32 choiceId, uint256 amount, (uint256,string) _reason)
+    - event: VoteRetracted(address indexed voter, bytes32 choiceId, uint256 amount, (uint256,string) _reason)
+  - name: BaalPoints_v0_2_0
+    handler: src/BaalPoints_v0_2_0.ts
+    events: 
+    - event: Initialized(address contest, address dao, address sharesToken, address lootToken, uint256 checkpoint, uint8 holderType)
+  - name: BaalGate_v0_2_0
+    handler: src/BaalGate_v0_2_0.ts
+    events: 
+    - event: Initialized(address contest, address daoAddress, address lootToken, address sharesToken, uint8 holderType, uint256 holderThreshold, uint256 checkpoint, bool timed, uint256 startTime, uint256 endTime)
+    - event: Registered(bytes32 choiceId, ((uint256,string), bytes, bool, address) choiceData, address contest);
+    - event: Removed(bytes32 choiceId, address contest)
+  - name: PrePop_v0_2_0
+    handler: src/PrePop_v0_2_0.ts
+    events:
+    - event: Initialized(address contest)
+    - event: Registered(bytes32 choiceId, ((uint256,string), bytes, bool, address) choiceData, address contest);
 rollback_on_reorg: false
 field_selection:
   transaction_fields:

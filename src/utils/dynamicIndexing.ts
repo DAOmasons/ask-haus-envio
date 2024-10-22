@@ -16,12 +16,3 @@ export enum Module {
   BaalGate_v0_2_0 = 'BaalGate_v0.2.0',
   PrePop_v0_2_0 = 'PrePop_v0.2.0',
 }
-
-export const contestFactory = (
-  event: eventLog<FastFactory_ContestCloned_eventArgs>,
-  context: contractRegistrations
-) => {
-  if (event.params.contestVersion === ContestVersion.v0_1_0) {
-    context.addFastFactory(event.params.contestAddress);
-  }
-};
