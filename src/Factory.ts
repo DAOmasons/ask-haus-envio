@@ -1,6 +1,6 @@
 import { FastFactory } from 'generated';
 import { addTransaction } from './utils/sync';
-import { Module } from './utils/dynamicIndexing';
+import { isAskHausPoll, isImpl, Module } from './utils/dynamicIndexing';
 
 FastFactory.FactoryInitialized.handler(async ({ event, context }) => {
   context.Factory.set({
@@ -97,10 +97,14 @@ FastFactory.ModuleTemplateDeleted.handler(async ({ event, context }) => {
 });
 
 FastFactory.ContestCloned.contractRegister(({ event, context }) => {
+  const shouldIndex = isImpl(event.params.filterTag);
+  if (!shouldIndex) return;
   context.addContest_v0_2_0(event.params.contestAddress);
 });
 
 FastFactory.ContestCloned.handler(async ({ event, context }) => {
+  const shouldIndex = isImpl(event.params.filterTag);
+  if (!shouldIndex) return;
   context.RoundClone.set({
     id: event.params.contestAddress,
     roundAddress: event.params.contestAddress,
@@ -111,6 +115,9 @@ FastFactory.ContestCloned.handler(async ({ event, context }) => {
 });
 
 FastFactory.ModuleCloned.contractRegister(({ event, context }) => {
+  const shouldIndex = isImpl(event.params.filterTag);
+  if (!shouldIndex) return;
+
   if (event.params.moduleName === Module.BaalGate_v0_2_0) {
     context.addBaalGate_v0_2_0(event.params.moduleAddress);
   } else if (event.params.moduleName === Module.BaalPoints_v0_2_0) {
@@ -123,6 +130,9 @@ FastFactory.ModuleCloned.contractRegister(({ event, context }) => {
 });
 
 FastFactory.ModuleCloned.handler(async ({ event, context }) => {
+  const shouldIndex = isImpl(event.params.filterTag);
+  if (!shouldIndex) return;
+
   context.ModuleClone.set({
     id: event.params.moduleAddress,
     moduleAddress: event.params.moduleAddress,
@@ -134,4 +144,35 @@ FastFactory.ModuleCloned.handler(async ({ event, context }) => {
   });
 });
 
-FastFactory.ContestBuilt.handler(async ({ event, context }) => {});
+FastFactory.ContestBuilt.handler(async ({ event, context }) => {
+  const shouldIndex = isImpl(event.params.filterTag);
+
+  if (!shouldIndex) return;
+
+  // const votesModule = await context.ModuleClone.get(event.params.votesModule);
+  // const pointsModule = await context.ModuleClone.get(event.params.pointsModule);
+  // const choicesModule = await context.ModuleClone.get(
+  //   event.params.choicesModule
+  // );
+  // const contest = await context.RoundClone.get(event.params.contestAddress);
+
+  // if (!votesModule || !pointsModule || !choicesModule) {
+  //   context.log.error(
+  //     `Module not found: ${event.params.votesModule} ${event.params.pointsModule} ${event.params.choicesModule}`
+  //   );
+  //   return;
+  // }
+
+  if (
+    isAskHausPoll({
+      filterTag: event.params.filterTag,
+      votesModuleName: event.params.votesModule,
+      pointsModuleName: event.params.pointsModule,
+      choicesModuleName: event.params.choicesModule,
+      contestVersion: event.params.contestVersion,
+    })
+  ) {
+  }
+
+  addTransaction(event, context);
+});

@@ -97,7 +97,13 @@ type Params_PrePop_v0_2_0 {
 type Params_TimedVotes_v0_2_0 {
   id: ID!
   clone: ModuleClone!
-  duration: BigInt!
+  duration: BigInt
   startTime: BigInt
   endTime: BigInt
+}
+
+####################### IMPLEMENTATION SPECIFIC #######################
+
+type AskHausChoice {
+  id: ID!
 }
