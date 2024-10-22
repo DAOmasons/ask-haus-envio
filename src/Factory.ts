@@ -1,5 +1,6 @@
 import { FastFactory } from 'generated';
 import { addTransaction } from './utils/sync';
+import { Module } from './utils/dynamicIndexing';
 
 FastFactory.FactoryInitialized.handler(async ({ event, context }) => {
   context.Factory.set({
@@ -109,6 +110,18 @@ FastFactory.ContestCloned.handler(async ({ event, context }) => {
   });
 });
 
+FastFactory.ModuleCloned.contractRegister(({ event, context }) => {
+  if (event.params.moduleName === Module.BaalGate_v0_2_0) {
+    context.addBaalGate_v0_2_0(event.params.moduleAddress);
+  } else if (event.params.moduleName === Module.BaalPoints_v0_2_0) {
+    context.addBaalPoints_v0_2_0(event.params.moduleAddress);
+  } else if (event.params.moduleName === Module.TimedVotes_v0_2_0) {
+    context.addTimedVotes_v0_2_0(event.params.moduleAddress);
+  } else if (event.params.moduleName === Module.PrePop_v0_2_0) {
+    context.addPrePop_v0_2_0(event.params.moduleAddress);
+  }
+});
+
 FastFactory.ModuleCloned.handler(async ({ event, context }) => {
   context.ModuleClone.set({
     id: event.params.moduleAddress,
@@ -121,16 +134,4 @@ FastFactory.ModuleCloned.handler(async ({ event, context }) => {
   });
 });
 
-FastFactory.ContestBuilt.handler(async ({ event, context }) => {
-  // const entity: FastFactory_ContestBuilt = {
-  //   id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-  //   votesModule: event.params.votesModule,
-  //   pointsModule: event.params.pointsModule,
-  //   choicesModule: event.params.choicesModule,
-  //   executionModule: event.params.executionModule,
-  //   contestAddress: event.params.contestAddress,
-  //   contestVersion: event.params.contestVersion,
-  //   filterTag: event.params.filterTag,
-  // };
-  // context.FastFactory_ContestBuilt.set(entity);
-});
+FastFactory.ContestBuilt.handler(async ({ event, context }) => {});

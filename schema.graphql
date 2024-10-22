@@ -61,3 +61,43 @@ type TX {
   txHash: String!
   timestamp: Int!
 }
+
+####################### MODULE SPECIFIC #######################
+
+type Params_BaalPoints_v0_2_0 {
+  id: ID!
+  clone: ModuleClone!
+  dao: String!
+  lootToken: String!
+  sharesToken: String!
+  checkpoint: BigInt!
+  holderType: BigInt!
+}
+
+type Params_BaalGate_v0_2_0 {
+  id: ID!
+  clone: ModuleClone!
+  dao: String!
+  lootToken: String!
+  sharesToken: String!
+  holderType: BigInt!
+  holderThreshold: BigInt!
+  checkpoint: BigInt!
+  timed: Boolean!
+  startTime: BigInt!
+  endTime: BigInt!
+}
+
+type Params_PrePop_v0_2_0 {
+  id: ID!
+  clone: ModuleClone!
+  numChoices: BigInt!
+}
+
+type Params_TimedVotes_v0_2_0 {
+  id: ID!
+  clone: ModuleClone!
+  duration: BigInt!
+  startTime: BigInt
+  endTime: BigInt
+}
