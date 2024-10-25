@@ -43,8 +43,6 @@ type ModuleClone {
 type Round {
   id: ID!
   roundAddress: String!
-  roundVersion: String!
-  filterTag: String!
   contestStatus: BigInt!
   votesModule: ModuleClone!
   pointsModule: ModuleClone!
@@ -91,7 +89,7 @@ type Params_BaalGate_v0_2_0 {
 type Params_PrePop_v0_2_0 {
   id: ID!
   clone: ModuleClone!
-  numChoices: BigInt!
+  choices: [BasicChoice!]! @derivedFrom(field: "moduleParams")
 }
 
 type Params_TimedVotes_v0_2_0 {
@@ -104,6 +102,29 @@ type Params_TimedVotes_v0_2_0 {
 
 ####################### IMPLEMENTATION SPECIFIC #######################
 
-type AskHausChoice {
+type BasicChoice {
   id: ID!
+  choiceId: String!
+  title: String!
+  color: String
+  description: String
+  link: String
+  bytes: String!
+  registrar: String!
+  moduleParams: Params_PrePop_v0_2_0!
+  isValid: Boolean!
+  isActive: Boolean!
+}
+
+type AskHausPoll {
+  id: ID!
+  round: Round!
+  votesParams: Params_BaalPoints_v0_2_0!
+  pointsParams: Params_BaalPoints_v0_2_0!
+  choicesParams: Params_BaalPoints_v0_2_0!
+  question: String!
+  description: String
+  link: String
+  answerType: String!
+  requestComment: Boolean!
 }
