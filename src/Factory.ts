@@ -1,6 +1,12 @@
 import { FastFactory } from 'generated';
 import { addTransaction } from './utils/sync';
-import { isAskHausPoll, isImpl, Module } from './utils/dynamicIndexing';
+import {
+  IndexerKey,
+  isAskHausPoll,
+  isImpl,
+  Module,
+} from './utils/dynamicIndexing';
+import { basicChoiceSchema, pollMetadataSchema } from './utils/schemas';
 
 FastFactory.FactoryInitialized.handler(async ({ event, context }) => {
   context.Factory.set({
@@ -149,6 +155,13 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
 
   if (!shouldIndex) return;
 
+  const contest = await context.Round.get(event.params.contestAddress);
+
+  if (!contest) {
+    context.log.error(`Contest ${event.params.contestAddress} not found`);
+    return;
+  }
+
   // const votesModule = await context.ModuleClone.get(event.params.votesModule);
   // const pointsModule = await context.ModuleClone.get(event.params.pointsModule);
   // const choicesModule = await context.ModuleClone.get(
@@ -172,6 +185,29 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       contestVersion: event.params.contestVersion,
     })
   ) {
+    const protocol = contest.mdProtocol;
+    const pointer = contest.mdPointer;
+
+    if (protocol === 6969420n) {
+      const validated = pollMetadataSchema.safeParse(JSON.parse(pointer));
+      if (validated.success) {
+        const { title, description, pollLink, answerType, requestComment } =
+          validated.data;
+
+        context.AskHausPoll.set({
+          id: event.params.contestAddress,
+          round_id: event.params.contestAddress,
+          votesParams_id: contest.votesModule_id,
+          pointsParams_id: contest.pointsModule_id,
+          choicesParams_id: contest.choicesModule_id,
+          title: title,
+          description: description,
+          pollLink: pollLink,
+          answerType: answerType,
+          requestComment: requestComment,
+        });
+      }
+    }
   }
 
   addTransaction(event, context);

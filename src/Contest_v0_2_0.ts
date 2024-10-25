@@ -11,5 +11,7 @@ Contest_v0_2_0.ContestInitialized.handler(async ({ event, context }) => {
     executionModule_id: event.params.executionModule,
     isContinuous: event.params.isContinuous,
     isRetractable: event.params.isRetractable,
+    mdProtocol: event.params.metadata[0],
+    mdPointer: event.params.metadata[1],
   });
 });

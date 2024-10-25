@@ -1,11 +1,3 @@
-import { exec } from 'child_process';
-import {
-  contractRegistrations,
-  eventLog,
-  FastFactory_ContestCloned_eventArgs,
-  handlerContext,
-} from 'generated';
-
 export enum ContestVersion {
   v0_1_0 = '0.2.0',
 }

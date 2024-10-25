@@ -50,6 +50,8 @@ type Round {
   choicesModule: ModuleClone!
   isContinuous: Boolean!
   isRetractable: Boolean!
+  mdProtocol: BigInt!
+  mdPointer: String!
 }
 
 type TX {
@@ -119,12 +121,12 @@ type BasicChoice {
 type AskHausPoll {
   id: ID!
   round: Round!
-  votesParams: Params_BaalPoints_v0_2_0!
+  votesParams: Params_TimedVotes_v0_2_0!
   pointsParams: Params_BaalPoints_v0_2_0!
-  choicesParams: Params_BaalPoints_v0_2_0!
-  question: String!
+  choicesParams: Params_PrePop_v0_2_0!
+  title: String!
   description: String
-  link: String
+  pollLink: String
+  requestComment: Boolean
   answerType: String!
-  requestComment: Boolean!
 }
