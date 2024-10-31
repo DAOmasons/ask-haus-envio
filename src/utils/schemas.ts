@@ -5,12 +5,12 @@ export const basicChoiceSchema = z.object({
   title: z.string().min(1, 'Choice title is required'),
   color: z.string().min(1, 'Choice color is required'),
   description: z.string().optional(),
-  link: z.string().url().optional(),
+  link: z.string().optional(),
 });
 
 export const pollMetadataSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  pollLink: z.string().url().optional(),
+  pollLink: z.string().optional(),
   description: z.string().optional(),
   answerType: z.string().min(1, 'Answer type is required'),
   requestComment: z.boolean(),

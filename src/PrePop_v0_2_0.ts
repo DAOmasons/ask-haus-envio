@@ -26,7 +26,7 @@ PrePop_v0_2_0.Registered.handler(async ({ event, context }) => {
       const { title, color, description, link } = validated.data;
 
       context.BasicChoice.set({
-        id: `choice-${event.params.choiceId}-${event.srcAddress}`,
+        id: `choice-${event.params.choiceId}`,
         choiceId: event.params.choiceId,
         title,
         color,
@@ -37,6 +37,7 @@ PrePop_v0_2_0.Registered.handler(async ({ event, context }) => {
         moduleParams_id: event.srcAddress,
         isValid: true,
         isActive: isActive,
+        amountVoted: 0n,
       });
     } else {
       context.log.error(
@@ -55,6 +56,7 @@ PrePop_v0_2_0.Registered.handler(async ({ event, context }) => {
         moduleParams_id: event.srcAddress,
         isValid: false,
         isActive: isActive,
+        amountVoted: 0n,
       });
     }
   }

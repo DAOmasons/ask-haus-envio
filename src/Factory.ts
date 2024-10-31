@@ -1,12 +1,7 @@
 import { FastFactory } from 'generated';
 import { addTransaction } from './utils/sync';
-import {
-  IndexerKey,
-  isAskHausPoll,
-  isImpl,
-  Module,
-} from './utils/dynamicIndexing';
-import { basicChoiceSchema, pollMetadataSchema } from './utils/schemas';
+import { isAskHausPoll, isImpl, Module } from './utils/dynamicIndexing';
+import { pollMetadataSchema } from './utils/schemas';
 
 FastFactory.FactoryInitialized.handler(async ({ event, context }) => {
   context.Factory.set({
@@ -162,20 +157,6 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
     return;
   }
 
-  // const votesModule = await context.ModuleClone.get(event.params.votesModule);
-  // const pointsModule = await context.ModuleClone.get(event.params.pointsModule);
-  // const choicesModule = await context.ModuleClone.get(
-  //   event.params.choicesModule
-  // );
-  // const contest = await context.RoundClone.get(event.params.contestAddress);
-
-  // if (!votesModule || !pointsModule || !choicesModule) {
-  //   context.log.error(
-  //     `Module not found: ${event.params.votesModule} ${event.params.pointsModule} ${event.params.choicesModule}`
-  //   );
-  //   return;
-  // }
-
   if (
     isAskHausPoll({
       filterTag: event.params.filterTag,
@@ -195,19 +176,26 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
           validated.data;
 
         context.AskHausPoll.set({
-          id: event.params.contestAddress,
+          id: event.params.filterTag,
           round_id: event.params.contestAddress,
           votesParams_id: contest.votesModule_id,
           pointsParams_id: contest.pointsModule_id,
           choicesParams_id: contest.choicesModule_id,
+          postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
           title: title,
           description: description,
           pollLink: pollLink,
           answerType: answerType,
           requestComment: requestComment,
         });
+      } else {
+        context.log.error(`Params ${event.srcAddress} not found`);
+        console.log('pointer', pointer);
       }
     }
+  } else {
+    context.log.error(`Params ${event.srcAddress} not found`);
+    console.log('pointer', contest.mdPointer);
   }
 
   addTransaction(event, context);

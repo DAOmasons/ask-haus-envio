@@ -116,6 +116,7 @@ type BasicChoice {
   moduleParams: Params_PrePop_v0_2_0!
   isValid: Boolean!
   isActive: Boolean!
+  amountVoted: BigInt!
 }
 
 type AskHausPoll {
@@ -124,9 +125,28 @@ type AskHausPoll {
   votesParams: Params_TimedVotes_v0_2_0!
   pointsParams: Params_BaalPoints_v0_2_0!
   choicesParams: Params_PrePop_v0_2_0!
+  postedBy: String!
   title: String!
   description: String
   pollLink: String
   requestComment: Boolean
   answerType: String!
+}
+
+type AskHausVote {
+  id: ID!
+  round: Round!
+  choice: BasicChoice!
+  amount: BigInt!
+  batch: BatchVote!
+  voter: String!
+}
+
+type BatchVote {
+  id: ID!
+  round: Round!
+  timestamp: Int!
+  voter: String!
+  votes: [AskHausVote!]! @derivedFrom(field: "batch")
+  comment: String
 }
