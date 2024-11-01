@@ -1,12 +1,7 @@
 # yaml-language-server: $schema=./node_modules/envio/evm.schema.json
 name: ask-arb-envio
-networks:
-- id: 42161
-  start_block: 0
-  contracts:
+contracts:
   - name: FastFactory
-    address:
-    - 0x72429C2392d79458c411BC5DecEb8cCd28530BF0
     handler: src/Factory.ts
     events:
     - event: AdminAdded(address admin)
@@ -48,6 +43,27 @@ networks:
     events:
     - event: Initialized(address contest)
     - event: Registered(bytes32 choiceId, ((uint256,string), bytes, bool, address) choiceData, address contest);
+networks:
+- id: 42161
+  start_block: 0    
+  contracts:
+    - name: Contest_v0_2_0
+    - name: TimedVotes_v0_2_0
+    - name: BaalPoints_v0_2_0
+    - name: BaalGate_v0_2_0
+    - name: PrePop_v0_2_0
+    - name: FastFactory
+      address: 0x72429C2392d79458c411BC5DecEb8cCd28530BF0
+- id: 8453
+  start_block: 0
+  contracts:
+    - name: Contest_v0_2_0
+    - name: TimedVotes_v0_2_0
+    - name: BaalPoints_v0_2_0
+    - name: BaalGate_v0_2_0
+    - name: PrePop_v0_2_0
+    - name: FastFactory
+      address: 0x4da34984D2E7E795eEcB2368014a4B9C6E66BdB0      
 rollback_on_reorg: false
 field_selection:
   transaction_fields:
@@ -55,3 +71,8 @@ field_selection:
     - "to"
     - "hash"
     - "transactionIndex"
+
+
+#     networks:
+# - id: 42161
+#   start_block: 0
