@@ -72,7 +72,3 @@ field_selection:
     - "hash"
     - "transactionIndex"
 
-
-#     networks:
-# - id: 42161
-#   start_block: 0
