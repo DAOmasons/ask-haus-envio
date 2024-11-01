@@ -70,5 +70,3 @@ Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
 
   addTransaction(event, context);
 });
-
-// deploy
