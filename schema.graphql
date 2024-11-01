@@ -52,6 +52,9 @@ type Round {
   isRetractable: Boolean!
   mdProtocol: BigInt!
   mdPointer: String!
+  batchVotes: [BatchVote!]! @derivedFrom(field: "round")
+  votes: [BasicVote!]! @derivedFrom(field: "round")
+  totalVoted: BigInt!
 }
 
 type TX {
@@ -60,6 +63,25 @@ type TX {
   srcAddress: String!
   txHash: String!
   timestamp: Int!
+}
+
+type BasicVote {
+  id: ID!
+  round: Round!
+  choice: BasicChoice!
+  amount: BigInt!
+  batch: BatchVote!
+  voter: String!
+}
+
+type BatchVote {
+  id: ID!
+  round: Round!
+  timestamp: Int!
+  voter: String!
+  totalVoted: BigInt!
+  votes: [BasicVote!]! @derivedFrom(field: "batch")
+  comment: String
 }
 
 ####################### MODULE SPECIFIC #######################
@@ -131,22 +153,4 @@ type AskHausPoll {
   pollLink: String
   requestComment: Boolean
   answerType: String!
-}
-
-type AskHausVote {
-  id: ID!
-  round: Round!
-  choice: BasicChoice!
-  amount: BigInt!
-  batch: BatchVote!
-  voter: String!
-}
-
-type BatchVote {
-  id: ID!
-  round: Round!
-  timestamp: Int!
-  voter: String!
-  votes: [AskHausVote!]! @derivedFrom(field: "batch")
-  comment: String
 }

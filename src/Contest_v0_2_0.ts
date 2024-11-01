@@ -14,6 +14,7 @@ Contest_v0_2_0.ContestInitialized.handler(async ({ event, context }) => {
     isRetractable: event.params.isRetractable,
     mdProtocol: event.params.metadata[0],
     mdPointer: event.params.metadata[1],
+    totalVoted: 0n,
   });
 });
 
@@ -22,7 +23,7 @@ Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
     event.params.choices.map(async (choiceId, i) => {
       const amount = event.params.amounts[i];
 
-      context.AskHausVote.set({
+      context.BasicVote.set({
         id: `${event.srcAddress}-${choiceId}-${event.params.voter}`,
         round_id: event.srcAddress,
         choice_id: `choice-${choiceId}`,
@@ -46,11 +47,24 @@ Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
     })
   );
 
+  const round = await context.Round.get(event.srcAddress);
+
+  if (!round) {
+    context.log.error(`Round ${event.srcAddress} not found`);
+    return;
+  }
+
+  context.Round.set({
+    ...round,
+    totalVoted: round.totalVoted + event.params.totalAmount,
+  });
+
   context.BatchVote.set({
     id: `batch-${event.transaction.hash}`,
     timestamp: event.block.timestamp,
     round_id: event.srcAddress,
     voter: event.params.voter,
+    totalVoted: event.params.totalAmount,
     comment: undefined,
   });
 
