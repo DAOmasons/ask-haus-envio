@@ -1,7 +1,12 @@
 import { FastFactory } from 'generated';
 import { addTransaction } from './utils/sync';
-import { isAskHausPoll, isImpl, Module } from './utils/dynamicIndexing';
-import { pollMetadataSchema } from './utils/schemas';
+import {
+  isAskHausContest,
+  isAskHausPoll,
+  isImpl,
+  Module,
+} from './utils/dynamicIndexing';
+import { contestMetadataSchema, pollMetadataSchema } from './utils/schemas';
 
 FastFactory.FactoryInitialized.handler(async ({ event, context }) => {
   context.Factory.set({
@@ -97,11 +102,16 @@ FastFactory.ModuleTemplateDeleted.handler(async ({ event, context }) => {
   });
 });
 
-FastFactory.ContestCloned.contractRegister(({ event, context }) => {
-  const shouldIndex = isImpl(event.params.filterTag);
-  if (!shouldIndex) return;
-  context.addContest_v0_2_0(event.params.contestAddress);
-});
+FastFactory.ContestCloned.contractRegister(
+  ({ event, context }) => {
+    const shouldIndex = isImpl(event.params.filterTag);
+    if (!shouldIndex) return;
+    context.addContest_v0_2_0(event.params.contestAddress);
+  },
+  {
+    preRegisterDynamicContracts: true,
+  }
+);
 
 FastFactory.ContestCloned.handler(async ({ event, context }) => {
   const shouldIndex = isImpl(event.params.filterTag);
@@ -115,20 +125,25 @@ FastFactory.ContestCloned.handler(async ({ event, context }) => {
   });
 });
 
-FastFactory.ModuleCloned.contractRegister(({ event, context }) => {
-  const shouldIndex = isImpl(event.params.filterTag);
-  if (!shouldIndex) return;
+FastFactory.ModuleCloned.contractRegister(
+  ({ event, context }) => {
+    const shouldIndex = isImpl(event.params.filterTag);
+    if (!shouldIndex) return;
 
-  if (event.params.moduleName === Module.BaalGate_v0_2_0) {
-    context.addBaalGate_v0_2_0(event.params.moduleAddress);
-  } else if (event.params.moduleName === Module.BaalPoints_v0_2_0) {
-    context.addBaalPoints_v0_2_0(event.params.moduleAddress);
-  } else if (event.params.moduleName === Module.TimedVotes_v0_2_0) {
-    context.addTimedVotes_v0_2_0(event.params.moduleAddress);
-  } else if (event.params.moduleName === Module.PrePop_v0_2_0) {
-    context.addPrePop_v0_2_0(event.params.moduleAddress);
+    if (event.params.moduleName === Module.BaalGate_v0_2_0) {
+      context.addBaalGate_v0_2_0(event.params.moduleAddress);
+    } else if (event.params.moduleName === Module.BaalPoints_v0_2_0) {
+      context.addBaalPoints_v0_2_0(event.params.moduleAddress);
+    } else if (event.params.moduleName === Module.TimedVotes_v0_2_0) {
+      context.addTimedVotes_v0_2_0(event.params.moduleAddress);
+    } else if (event.params.moduleName === Module.PrePop_v0_2_0) {
+      context.addPrePop_v0_2_0(event.params.moduleAddress);
+    }
+  },
+  {
+    preRegisterDynamicContracts: true,
   }
-});
+);
 
 FastFactory.ModuleCloned.handler(async ({ event, context }) => {
   const shouldIndex = isImpl(event.params.filterTag);
@@ -193,8 +208,40 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
         console.log('pointer', pointer);
       }
     }
+  } else if (
+    isAskHausContest({
+      filterTag: event.params.filterTag,
+      votesModuleName: event.params.votesModule,
+      pointsModuleName: event.params.pointsModule,
+      choicesModuleName: event.params.choicesModule,
+      contestVersion: event.params.contestVersion,
+    })
+  ) {
+    const protocol = contest.mdProtocol;
+    const pointer = contest.mdPointer;
+
+    if (protocol === 6969420n) {
+      const validated = contestMetadataSchema.safeParse(JSON.parse(pointer));
+
+      if (validated.success) {
+        const { title, description, pollLink, answerType, requestComment } =
+          validated.data;
+
+        // context.AskHausPoll.set({})
+      }
+
+      // if (validated.success) {
+      //   const { title, description, pollLink, answerType, requestComment } =
+      //     validated.data;
+    }
   } else {
-    context.log.error(`Params ${event.srcAddress} not found`);
+    context.log.error(`Params ${event.srcAddress} not found
+          filterTag: ${event.params.filterTag}
+          votesModuleName: ${event.params.votesModule}
+          pointsModuleName: ${event.params.pointsModule}
+          choicesModuleName: ${event.params.choicesModule}
+          contestVersion: ${event.params.contestVersion}
+      `);
     console.log('pointer', contest.mdPointer);
   }
 

@@ -34,7 +34,7 @@ PrePop_v0_2_0.Registered.handler(async ({ event, context }) => {
         link,
         bytes,
         registrar,
-        moduleParams_id: event.srcAddress,
+        basicChoices_id: event.srcAddress,
         isValid: true,
         isActive: isActive,
         amountVoted: 0n,
@@ -53,17 +53,11 @@ PrePop_v0_2_0.Registered.handler(async ({ event, context }) => {
         choiceId: event.params.choiceId,
         bytes,
         registrar,
-        moduleParams_id: event.srcAddress,
+        basicChoices_id: event.srcAddress,
         isValid: false,
         isActive: isActive,
         amountVoted: 0n,
       });
     }
   }
-
-  //   const metadata = context.BasicChoice.set({
-  //     id: `choice-${event.params.choiceId}-${event.srcAddress}`,
-  //     choiceId: event.params.choiceId,
-
-  //   });
 });
