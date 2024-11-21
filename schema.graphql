@@ -153,6 +153,7 @@ type BasicChoices {
 type AskHausPoll {
   id: ID!
   round: Round!
+  createdAt: Int!
   votesParams: Params_TimedVotes_v0_2_0!
   pointsParams: Params_BaalPoints_v0_2_0!
   choicesParams: Params_PrePop_v0_2_0!
@@ -166,6 +167,7 @@ type AskHausPoll {
 
 type AskHausContest implements BasicChoices {
   id: ID!
+  createdAt: Int!
   round: Round!
   votesParams: Params_TimedVotes_v0_2_0!
   pointsParams: Params_BaalPoints_v0_2_0!

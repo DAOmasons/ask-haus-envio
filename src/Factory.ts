@@ -182,6 +182,7 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
 
         context.AskHausPoll.set({
           id: event.params.filterTag,
+          createdAt: event.block.timestamp,
           round_id: event.params.contestAddress,
           votesParams_id: contest.votesModule_id,
           pointsParams_id: contest.pointsModule_id,
@@ -219,6 +220,7 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
 
         context.AskHausContest.set({
           id: event.params.filterTag,
+          createdAt: event.block.timestamp,
           round_id: event.params.contestAddress,
           votesParams_id: contest.votesModule_id,
           pointsParams_id: contest.pointsModule_id,
