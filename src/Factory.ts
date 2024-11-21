@@ -217,12 +217,25 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
         const { title, description, pollLink, answerType, requestComment } =
           validated.data;
 
-        // context.AskHausPoll.set({})
+        context.AskHausContest.set({
+          id: event.params.filterTag,
+          round_id: event.params.contestAddress,
+          votesParams_id: contest.votesModule_id,
+          pointsParams_id: contest.pointsModule_id,
+          choicesParams_id: contest.choicesModule_id,
+          postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
+          title: title,
+          description: JSON.stringify(description),
+          pollLink: pollLink,
+          answerType: answerType,
+          requestComment: requestComment,
+        });
       }
-
-      // if (validated.success) {
-      //   const { title, description, pollLink, answerType, requestComment } =
-      //     validated.data;
+    } else {
+      context.log.error(
+        `Onchain metadata validation failed for contest: ${event.srcAddress}`
+      );
+      console.log('pointer', pointer);
     }
   } else {
     context.log.warn('Implementation not indexed');
