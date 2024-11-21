@@ -22,7 +22,7 @@
     "typescript": "5.2.2"
   },
   "dependencies": {
-    "envio": "2.7.3",
+    "envio": "2.4.4",
     "zod": "^3.23.8"
   },
   "optionalDependencies": {

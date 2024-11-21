@@ -102,16 +102,11 @@ FastFactory.ModuleTemplateDeleted.handler(async ({ event, context }) => {
   });
 });
 
-FastFactory.ContestCloned.contractRegister(
-  ({ event, context }) => {
-    const shouldIndex = isImpl(event.params.filterTag);
-    if (!shouldIndex) return;
-    context.addContest_v0_2_0(event.params.contestAddress);
-  },
-  {
-    preRegisterDynamicContracts: true,
-  }
-);
+FastFactory.ContestCloned.contractRegister(({ event, context }) => {
+  const shouldIndex = isImpl(event.params.filterTag);
+  if (!shouldIndex) return;
+  context.addContest_v0_2_0(event.params.contestAddress);
+});
 
 FastFactory.ContestCloned.handler(async ({ event, context }) => {
   const shouldIndex = isImpl(event.params.filterTag);
@@ -125,25 +120,20 @@ FastFactory.ContestCloned.handler(async ({ event, context }) => {
   });
 });
 
-FastFactory.ModuleCloned.contractRegister(
-  ({ event, context }) => {
-    const shouldIndex = isImpl(event.params.filterTag);
-    if (!shouldIndex) return;
+FastFactory.ModuleCloned.contractRegister(({ event, context }) => {
+  const shouldIndex = isImpl(event.params.filterTag);
+  if (!shouldIndex) return;
 
-    if (event.params.moduleName === Module.BaalGate_v0_2_0) {
-      context.addBaalGate_v0_2_0(event.params.moduleAddress);
-    } else if (event.params.moduleName === Module.BaalPoints_v0_2_0) {
-      context.addBaalPoints_v0_2_0(event.params.moduleAddress);
-    } else if (event.params.moduleName === Module.TimedVotes_v0_2_0) {
-      context.addTimedVotes_v0_2_0(event.params.moduleAddress);
-    } else if (event.params.moduleName === Module.PrePop_v0_2_0) {
-      context.addPrePop_v0_2_0(event.params.moduleAddress);
-    }
-  },
-  {
-    preRegisterDynamicContracts: true,
+  if (event.params.moduleName === Module.BaalGate_v0_2_0) {
+    context.addBaalGate_v0_2_0(event.params.moduleAddress);
+  } else if (event.params.moduleName === Module.BaalPoints_v0_2_0) {
+    context.addBaalPoints_v0_2_0(event.params.moduleAddress);
+  } else if (event.params.moduleName === Module.TimedVotes_v0_2_0) {
+    context.addTimedVotes_v0_2_0(event.params.moduleAddress);
+  } else if (event.params.moduleName === Module.PrePop_v0_2_0) {
+    context.addPrePop_v0_2_0(event.params.moduleAddress);
   }
-);
+});
 
 FastFactory.ModuleCloned.handler(async ({ event, context }) => {
   const shouldIndex = isImpl(event.params.filterTag);
@@ -235,14 +225,15 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       //     validated.data;
     }
   } else {
-    context.log.error(`Params ${event.srcAddress} not found
-          filterTag: ${event.params.filterTag}
-          votesModuleName: ${event.params.votesModule}
-          pointsModuleName: ${event.params.pointsModule}
-          choicesModuleName: ${event.params.choicesModule}
-          contestVersion: ${event.params.contestVersion}
-      `);
-    console.log('pointer', contest.mdPointer);
+    context.log.warn('Implementation not indexed');
+    // context.log.error(`Params ${event.srcAddress} not found
+    //       filterTag: ${event.params.filterTag}
+    //       votesModuleName: ${event.params.votesModule}
+    //       pointsModuleName: ${event.params.pointsModule}
+    //       choicesModuleName: ${event.params.choicesModule}
+    //       contestVersion: ${event.params.contestVersion}
+    //   `);
+    // console.log('pointer', contest.mdPointer);
   }
 
   addTransaction(event, context);
