@@ -113,6 +113,7 @@ type Params_BaalGate_v0_2_0 {
 type Params_PrePop_v0_2_0 implements BasicChoices {
   id: ID!
   clone: ModuleClone!
+  basicChoices: BasicChoices!
 }
 
 type Params_TimedVotes_v0_2_0 {
@@ -145,11 +146,6 @@ type BasicChoices {
   choices: [BasicChoice!]! @derivedFrom(field: "basicChoices")
 }
 
-# type BasicVotes {
-#   id: ID!
-#   votes: [BasicVote!]! @derivedFrom(field: "collection")
-# }
-
 type AskHausPoll {
   id: ID!
   round: Round!
@@ -165,7 +161,7 @@ type AskHausPoll {
   answerType: String!
 }
 
-type AskHausContest implements BasicChoices {
+type AskHausContest {
   id: ID!
   createdAt: Int!
   round: Round!
@@ -178,4 +174,5 @@ type AskHausContest implements BasicChoices {
   pollLink: String
   requestComment: Boolean
   answerType: String!
+  choices: BasicChoices!
 }

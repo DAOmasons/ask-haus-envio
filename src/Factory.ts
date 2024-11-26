@@ -218,6 +218,10 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
         const { title, description, pollLink, answerType, requestComment } =
           validated.data;
 
+        context.BasicChoices.set({
+          id: event.params.filterTag,
+        });
+
         context.AskHausContest.set({
           id: event.params.filterTag,
           createdAt: event.block.timestamp,
@@ -231,6 +235,7 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
           pollLink: pollLink,
           answerType: answerType,
           requestComment: requestComment,
+          choices_id: event.params.filterTag,
         });
       }
     } else {

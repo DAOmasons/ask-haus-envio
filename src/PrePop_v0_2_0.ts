@@ -2,9 +2,14 @@ import { PrePop_v0_2_0 } from 'generated';
 import { basicChoiceSchema } from './utils/schemas';
 
 PrePop_v0_2_0.Initialized.handler(async ({ event, context }) => {
+  context.BasicChoices.set({
+    id: event.srcAddress,
+  });
+
   context.Params_PrePop_v0_2_0.set({
     id: event.srcAddress,
     clone_id: event.srcAddress,
+    basicChoices_id: event.srcAddress,
   });
 });
 
