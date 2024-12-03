@@ -215,11 +215,11 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       const validated = contestMetadataSchema.safeParse(JSON.parse(pointer));
 
       if (validated.success) {
-        const { title, description, pollLink, answerType, requestComment } =
+        const { title, description, link, answerType, requestComment } =
           validated.data;
 
         context.BasicChoices.set({
-          id: event.params.filterTag,
+          id: contest.choicesModule_id,
         });
 
         context.AskHausContest.set({
@@ -232,10 +232,10 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
           postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
           title: title,
           description: JSON.stringify(description),
-          pollLink: pollLink,
+          link: link,
           answerType: answerType,
           requestComment: requestComment,
-          choices_id: event.params.filterTag,
+          basicChoices_id: contest.choicesModule_id,
         });
       }
     } else {

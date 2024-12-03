@@ -139,6 +139,7 @@ type BasicChoice {
   isValid: Boolean!
   isActive: Boolean!
   amountVoted: BigInt!
+  postedBy: String!
 }
 
 type BasicChoices {
@@ -171,8 +172,8 @@ type AskHausContest {
   postedBy: String!
   title: String!
   description: String
-  pollLink: String
+  link: String
   requestComment: Boolean
   answerType: String!
-  choices: BasicChoices!
+  basicChoices: BasicChoices!
 }
