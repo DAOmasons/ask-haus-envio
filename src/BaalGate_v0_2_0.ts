@@ -46,6 +46,8 @@ BaalGate_v0_2_0.Registered.handler(async ({ event, context }) => {
         isValid: true,
         isActive: true,
         amountVoted: 0n,
+        postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
+        postedAt: event.block.timestamp,
       });
 
       addTransaction(event, context);

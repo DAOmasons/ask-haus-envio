@@ -43,6 +43,8 @@ PrePop_v0_2_0.Registered.handler(async ({ event, context }) => {
         isValid: true,
         isActive: isActive,
         amountVoted: 0n,
+        postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
+        postedAt: event.block.timestamp,
       });
     } else {
       context.log.error(
@@ -62,6 +64,8 @@ PrePop_v0_2_0.Registered.handler(async ({ event, context }) => {
         isValid: false,
         isActive: isActive,
         amountVoted: 0n,
+        postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
+        postedAt: event.block.timestamp,
       });
     }
   }

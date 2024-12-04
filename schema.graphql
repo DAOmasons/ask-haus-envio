@@ -140,6 +140,7 @@ type BasicChoice {
   isActive: Boolean!
   amountVoted: BigInt!
   postedBy: String!
+  postedAt: Int!
 }
 
 type BasicChoices {
