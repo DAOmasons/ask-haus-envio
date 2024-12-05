@@ -1,5 +1,4 @@
-import { entityHandlerContext, eventLog, handlerContext } from 'generated';
-import { TX_t } from 'generated/src/db/Entities.gen';
+import { eventLog, handlerContext } from 'generated';
 
 export const addTransaction = (
   event: eventLog<unknown>,

@@ -110,10 +110,10 @@ type Params_BaalGate_v0_2_0 {
   endTime: BigInt!
 }
 
-type Params_PrePop_v0_2_0 {
+type Params_PrePop_v0_2_0 implements BasicChoices {
   id: ID!
   clone: ModuleClone!
-  choices: [BasicChoice!]! @derivedFrom(field: "moduleParams")
+  basicChoices: BasicChoices!
 }
 
 type Params_TimedVotes_v0_2_0 {
@@ -135,15 +135,23 @@ type BasicChoice {
   link: String
   bytes: String!
   registrar: String!
-  moduleParams: Params_PrePop_v0_2_0!
+  basicChoices: BasicChoices!
   isValid: Boolean!
   isActive: Boolean!
   amountVoted: BigInt!
+  postedBy: String!
+  postedAt: Int!
+}
+
+type BasicChoices {
+  id: ID!
+  choices: [BasicChoice!]! @derivedFrom(field: "basicChoices")
 }
 
 type AskHausPoll {
   id: ID!
   round: Round!
+  createdAt: Int!
   votesParams: Params_TimedVotes_v0_2_0!
   pointsParams: Params_BaalPoints_v0_2_0!
   choicesParams: Params_PrePop_v0_2_0!
@@ -153,4 +161,20 @@ type AskHausPoll {
   pollLink: String
   requestComment: Boolean
   answerType: String!
+}
+
+type AskHausContest {
+  id: ID!
+  createdAt: Int!
+  round: Round!
+  votesParams: Params_TimedVotes_v0_2_0!
+  pointsParams: Params_BaalPoints_v0_2_0!
+  choicesParams: Params_BaalGate_v0_2_0!
+  postedBy: String!
+  title: String!
+  description: String
+  link: String
+  requestComment: Boolean
+  answerType: String!
+  basicChoices: BasicChoices!
 }

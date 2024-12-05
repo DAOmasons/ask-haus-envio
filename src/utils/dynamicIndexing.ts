@@ -12,6 +12,7 @@ export enum Module {
 
 export enum IndexerKey {
   PollV0 = 'askhaus-poll-v0',
+  ContestV0 = 'askhaus-contest-v0',
 }
 
 export const indexerKeys = Object.values(IndexerKey);
@@ -39,5 +40,27 @@ export const isAskHausPoll = ({
     pointsModuleName === Module.BaalPoints_v0_2_0 &&
     choicesModuleName === Module.PrePop_v0_2_0 &&
     contestVersion === ContestVersion.v0_1_0
+  );
+};
+
+export const isAskHausContest = ({
+  filterTag,
+  votesModuleName,
+  pointsModuleName,
+  choicesModuleName,
+  contestVersion,
+}: {
+  filterTag: string;
+  votesModuleName: string;
+  pointsModuleName: string;
+  choicesModuleName: string;
+  contestVersion: string;
+}) => {
+  return (
+    filterTag.includes(IndexerKey.ContestV0) &&
+    contestVersion === ContestVersion.v0_1_0 &&
+    votesModuleName === Module.TimedVotes_v0_2_0 &&
+    pointsModuleName === Module.BaalPoints_v0_2_0 &&
+    choicesModuleName === Module.BaalGate_v0_2_0
   );
 };

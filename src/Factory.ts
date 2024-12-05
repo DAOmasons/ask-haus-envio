@@ -1,7 +1,12 @@
 import { FastFactory } from 'generated';
 import { addTransaction } from './utils/sync';
-import { isAskHausPoll, isImpl, Module } from './utils/dynamicIndexing';
-import { pollMetadataSchema } from './utils/schemas';
+import {
+  isAskHausContest,
+  isAskHausPoll,
+  isImpl,
+  Module,
+} from './utils/dynamicIndexing';
+import { contestMetadataSchema, pollMetadataSchema } from './utils/schemas';
 
 FastFactory.FactoryInitialized.handler(async ({ event, context }) => {
   context.Factory.set({
@@ -177,6 +182,7 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
 
         context.AskHausPoll.set({
           id: event.params.filterTag,
+          createdAt: event.block.timestamp,
           round_id: event.params.contestAddress,
           votesParams_id: contest.votesModule_id,
           pointsParams_id: contest.pointsModule_id,
@@ -193,9 +199,61 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
         console.log('pointer', pointer);
       }
     }
+  } else if (
+    isAskHausContest({
+      filterTag: event.params.filterTag,
+      votesModuleName: event.params.votesModule,
+      pointsModuleName: event.params.pointsModule,
+      choicesModuleName: event.params.choicesModule,
+      contestVersion: event.params.contestVersion,
+    })
+  ) {
+    const protocol = contest.mdProtocol;
+    const pointer = contest.mdPointer;
+
+    if (protocol === 6969420n) {
+      const validated = contestMetadataSchema.safeParse(JSON.parse(pointer));
+
+      if (validated.success) {
+        const { title, description, link, answerType, requestComment } =
+          validated.data;
+
+        context.BasicChoices.set({
+          id: contest.choicesModule_id,
+        });
+
+        context.AskHausContest.set({
+          id: event.params.filterTag,
+          createdAt: event.block.timestamp,
+          round_id: event.params.contestAddress,
+          votesParams_id: contest.votesModule_id,
+          pointsParams_id: contest.pointsModule_id,
+          choicesParams_id: contest.choicesModule_id,
+          postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
+          title: title,
+          description: JSON.stringify(description),
+          link: link,
+          answerType: answerType,
+          requestComment: requestComment,
+          basicChoices_id: contest.choicesModule_id,
+        });
+      }
+    } else {
+      context.log.error(
+        `Onchain metadata validation failed for contest: ${event.srcAddress}`
+      );
+      console.log('pointer', pointer);
+    }
   } else {
-    context.log.error(`Params ${event.srcAddress} not found`);
-    console.log('pointer', contest.mdPointer);
+    context.log.warn('Implementation not indexed');
+    // context.log.error(`Params ${event.srcAddress} not found
+    //       filterTag: ${event.params.filterTag}
+    //       votesModuleName: ${event.params.votesModule}
+    //       pointsModuleName: ${event.params.pointsModule}
+    //       choicesModuleName: ${event.params.choicesModule}
+    //       contestVersion: ${event.params.contestVersion}
+    //   `);
+    // console.log('pointer', contest.mdPointer);
   }
 
   addTransaction(event, context);

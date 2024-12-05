@@ -2,9 +2,14 @@ import { PrePop_v0_2_0 } from 'generated';
 import { basicChoiceSchema } from './utils/schemas';
 
 PrePop_v0_2_0.Initialized.handler(async ({ event, context }) => {
+  context.BasicChoices.set({
+    id: event.srcAddress,
+  });
+
   context.Params_PrePop_v0_2_0.set({
     id: event.srcAddress,
     clone_id: event.srcAddress,
+    basicChoices_id: event.srcAddress,
   });
 });
 
@@ -34,10 +39,12 @@ PrePop_v0_2_0.Registered.handler(async ({ event, context }) => {
         link,
         bytes,
         registrar,
-        moduleParams_id: event.srcAddress,
+        basicChoices_id: event.srcAddress,
         isValid: true,
         isActive: isActive,
         amountVoted: 0n,
+        postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
+        postedAt: event.block.timestamp,
       });
     } else {
       context.log.error(
@@ -53,17 +60,13 @@ PrePop_v0_2_0.Registered.handler(async ({ event, context }) => {
         choiceId: event.params.choiceId,
         bytes,
         registrar,
-        moduleParams_id: event.srcAddress,
+        basicChoices_id: event.srcAddress,
         isValid: false,
         isActive: isActive,
         amountVoted: 0n,
+        postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
+        postedAt: event.block.timestamp,
       });
     }
   }
-
-  //   const metadata = context.BasicChoice.set({
-  //     id: `choice-${event.params.choiceId}-${event.srcAddress}`,
-  //     choiceId: event.params.choiceId,
-
-  //   });
 });
