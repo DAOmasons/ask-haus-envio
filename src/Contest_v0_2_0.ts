@@ -47,6 +47,7 @@ Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
     })
   );
 
+  //
   const round = await context.Round.get(event.srcAddress);
 
   if (!round) {
