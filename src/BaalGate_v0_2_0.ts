@@ -1,5 +1,5 @@
 import { BaalGate_v0_2_0 } from 'generated';
-import { basicChoiceSchema, detailedChoiceSchema } from './utils/schemas';
+import { detailedChoiceSchema } from './utils/schemas';
 import { addTransaction } from './utils/sync';
 
 BaalGate_v0_2_0.Initialized.handler(async ({ event, context }) => {
