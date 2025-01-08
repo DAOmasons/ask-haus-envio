@@ -45,7 +45,7 @@ contracts:
     - event: Registered(bytes32 choiceId, ((uint256,string), bytes, bool, address) choiceData, address contest);
 networks:
 - id: 42161
-  start_block: 0    
+  start_block: 263580570
   contracts:
     - name: Contest_v0_2_0
     - name: TimedVotes_v0_2_0
@@ -54,8 +54,8 @@ networks:
     - name: PrePop_v0_2_0
     - name: FastFactory
       address: 0x72429C2392d79458c411BC5DecEb8cCd28530BF0
-- id: 8453
-  start_block: 0
+- id: 421614
+  start_block: 84092542
   contracts:
     - name: Contest_v0_2_0
     - name: TimedVotes_v0_2_0
@@ -63,7 +63,7 @@ networks:
     - name: BaalGate_v0_2_0
     - name: PrePop_v0_2_0
     - name: FastFactory
-      address: 0x4da34984D2E7E795eEcB2368014a4B9C6E66BdB0      
+      address: 0xC75C7d885252d1863C647F30E4d739eC097896b1
 rollback_on_reorg: false
 field_selection:
   transaction_fields:
