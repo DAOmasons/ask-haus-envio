@@ -1,6 +1,6 @@
 export enum ContestVersion {
-  v0_1_0 = '0.2.0',
-  v0_2_0 = '0.2.1',
+  v0_2_0 = '0.2.0',
+  v0_2_1 = '0.2.1',
 }
 
 export enum Module {
@@ -44,7 +44,7 @@ export const isAskHausPoll = ({
     votesModuleName === Module.TimedVotes_v0_2_0 &&
     pointsModuleName === Module.BaalPoints_v0_2_0 &&
     choicesModuleName === Module.PrePop_v0_2_0 &&
-    contestVersion === ContestVersion.v0_1_0
+    contestVersion === ContestVersion.v0_2_0
   );
 };
 
@@ -63,9 +63,31 @@ export const isAskHausContest = ({
 }) => {
   return (
     filterTag.includes(IndexerKey.ContestV0) &&
-    contestVersion === ContestVersion.v0_1_0 &&
+    contestVersion === ContestVersion.v0_2_0 &&
     votesModuleName === Module.TimedVotes_v0_2_0 &&
     pointsModuleName === Module.BaalPoints_v0_2_0 &&
     choicesModuleName === Module.BaalGate_v0_2_0
+  );
+};
+
+export const isGGApplicationVote = ({
+  filterTag,
+  votesModuleName,
+  pointsModuleName,
+  choicesModuleName,
+  contestVersion,
+}: {
+  filterTag: string;
+  votesModuleName: string;
+  pointsModuleName: string;
+  choicesModuleName: string;
+  contestVersion: string;
+}) => {
+  return (
+    filterTag.includes(IndexerKey.GGRubricVote) &&
+    contestVersion === ContestVersion.v0_2_1 &&
+    votesModuleName === Module.RubricVotes_v0_1_0 &&
+    pointsModuleName === Module.EmptyPoints_v0_1_0 &&
+    choicesModuleName === Module.HatsAllowList_v0_1_1
   );
 };

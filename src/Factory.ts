@@ -3,6 +3,7 @@ import { addTransaction } from './utils/sync';
 import {
   isAskHausContest,
   isAskHausPoll,
+  isGGApplicationVote,
   isImpl,
   Module,
 } from './utils/dynamicIndexing';
@@ -134,6 +135,10 @@ FastFactory.ModuleCloned.contractRegister(({ event, context }) => {
     context.addTimedVotes_v0_2_0(event.params.moduleAddress);
   } else if (event.params.moduleName === Module.PrePop_v0_2_0) {
     context.addPrePop_v0_2_0(event.params.moduleAddress);
+  } else if (event.params.moduleName === Module.RubricVotes_v0_1_0) {
+    context.addRubricVotes_v0_1_0(event.params.moduleAddress);
+  } else if (event.params.moduleName === Module.HatsAllowList_v0_1_1) {
+    context.addHatsAllowList_v0_1_1(event.params.moduleAddress);
   }
 });
 
@@ -247,6 +252,15 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       );
       console.log('pointer', pointer);
     }
+  } else if (
+    isGGApplicationVote({
+      filterTag: event.params.filterTag,
+      votesModuleName: event.params.votesModule,
+      pointsModuleName: event.params.pointsModule,
+      choicesModuleName: event.params.choicesModule,
+      contestVersion: event.params.contestVersion,
+    })
+  ) {
   } else {
     context.log.warn('Implementation not indexed');
     // context.log.error(`Params ${event.srcAddress} not found

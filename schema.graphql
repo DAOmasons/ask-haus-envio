@@ -124,6 +124,19 @@ type Params_TimedVotes_v0_2_0 {
   endTime: BigInt
 }
 
+type Params_HAL_v0_1_1 {
+  id: ID!
+  clone: ModuleClone!
+  adminHatId: BigInt!
+}
+
+type Params_RubricVotes_v0_1_0 {
+  id: ID!
+  clone: ModuleClone!
+  adminHatId: BigInt!
+  judgeHatId: BigInt!
+}
+
 ####################### IMPLEMENTATION SPECIFIC #######################
 
 type BasicChoice {
@@ -177,4 +190,37 @@ type AskHausContest {
   requestComment: Boolean
   answerType: String!
   basicChoices: BasicChoices!
+}
+
+type GGApplicationVote {
+  id: ID!
+  createdAt: Int!
+  amount: BigInt!
+  feedback: String!
+  validFeedback: Boolean!
+  choice: GGApplication!
+}
+
+type GGApplication {
+  id: ID!
+  registrar: String!
+  application: String!
+  validApplication: Boolean!
+  postedBy: String!
+  lastUpdated: Int!
+  totalVoted: BigInt!
+  ggRound: GGApplicationRound!
+  votes: [GGApplicationVote!]! @derivedFrom(field: "choice")
+}
+
+type GGApplicationRound {
+  id: ID!
+  createdAt: Int!
+  round: Round!
+  votesParams: Params_RubricVotes_v0_1_0!
+  choicesParams: Params_HAL_v0_1_1!
+  postedBy: String!
+  rubric: String!
+  validRubric: Boolean!
+  applications: [GGApplication!]! @derivedFrom(field: "ggRound")
 }
