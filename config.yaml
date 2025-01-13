@@ -80,7 +80,7 @@ networks:
     - name: HatsAllowList_v0_1_1
     - name: FastFactory
       address: 0xC75C7d885252d1863C647F30E4d739eC097896b1
-rollback_on_reorg: false
+# rollback_on_reorg: false
 field_selection:
   transaction_fields:
     - "from"

@@ -261,7 +261,7 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       contestVersion: event.params.contestVersion,
     })
   ) {
-    console.log('contestAddress', event.params.contestAddress);
+    // TODO: Add validation once UI is ready
 
     context.GGApplicationRound.set({
       id: event.params.contestAddress,
