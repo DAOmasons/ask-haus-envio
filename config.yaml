@@ -43,6 +43,16 @@ contracts:
     events:
     - event: Initialized(address contest)
     - event: Registered(bytes32 choiceId, ((uint256,string), bytes, bool, address) choiceData, address contest);
+  - name: RubricVotes_v0_1_0
+    handler: src/RubricVotes_v0_1_0.ts
+    events:
+    - event: Initialized(address contest, address dao, address sharesToken, address lootToken, uint256 checkpoint, uint8 holderType)
+  - name: HatsAllowList_v0_1_0
+    handler: src/HatsAllowList_v0_1_0.ts
+    events:
+    - event: Initialized(address contest, address hats, uint256 hatId)
+    - event: Registered(bytes32 choiceId, ((uint256, string), bytes, bool) choiceData, address contest)
+    - event: Removed(bytes32 choiceId, address contest)
 networks:
 - id: 42161
   start_block: 263580570
@@ -52,6 +62,8 @@ networks:
     - name: BaalPoints_v0_2_0
     - name: BaalGate_v0_2_0
     - name: PrePop_v0_2_0
+    - name: RubricVotes_v0_1_0
+    - name: HatsAllowList_v0_1_0
     - name: FastFactory
       address: 0x72429C2392d79458c411BC5DecEb8cCd28530BF0
 - id: 421614
@@ -62,6 +74,8 @@ networks:
     - name: BaalPoints_v0_2_0
     - name: BaalGate_v0_2_0
     - name: PrePop_v0_2_0
+    - name: RubricVotes_v0_1_0
+    - name: HatsAllowList_v0_1_0
     - name: FastFactory
       address: 0xC75C7d885252d1863C647F30E4d739eC097896b1
 rollback_on_reorg: false

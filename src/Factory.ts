@@ -110,7 +110,9 @@ FastFactory.ContestCloned.contractRegister(({ event, context }) => {
 
 FastFactory.ContestCloned.handler(async ({ event, context }) => {
   const shouldIndex = isImpl(event.params.filterTag);
+
   if (!shouldIndex) return;
+
   context.RoundClone.set({
     id: event.params.contestAddress,
     roundAddress: event.params.contestAddress,
@@ -222,6 +224,7 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
           id: contest.choicesModule_id,
         });
 
+        //
         context.AskHausContest.set({
           id: event.params.filterTag,
           createdAt: event.block.timestamp,
