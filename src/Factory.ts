@@ -261,6 +261,18 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       contestVersion: event.params.contestVersion,
     })
   ) {
+    console.log('contestAddress', event.params.contestAddress);
+
+    context.GGApplicationRound.set({
+      id: event.params.contestAddress,
+      createdAt: event.block.timestamp,
+      round_id: event.params.contestAddress,
+      votesParams_id: contest.votesModule_id,
+      choicesParams_id: contest.choicesModule_id,
+      postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
+      rubric: contest.mdPointer,
+      validRubric: true,
+    });
   } else {
     context.log.warn('Implementation not indexed');
     // context.log.error(`Params ${event.srcAddress} not found
