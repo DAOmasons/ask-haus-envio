@@ -3,7 +3,6 @@ import { IndexerKey } from './utils/dynamicIndexing';
 import { addTransaction } from './utils/sync';
 
 HatsAllowList_v0_1_1.Initialized.handler(async ({ event, context }) => {
-  context.log.info(event.srcAddress);
   context.Params_HAL_v0_1_1.set({
     id: event.srcAddress,
     clone_id: event.srcAddress,
@@ -38,6 +37,7 @@ HatsAllowList_v0_1_1.Registered.handler(async ({ event, context }) => {
       postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
       lastUpdated: event.block.timestamp,
       totalVoted: 0n,
+      amountReviewed: 0,
       ggRound_id: event.params.contest,
     });
 

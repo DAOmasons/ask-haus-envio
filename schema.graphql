@@ -135,6 +135,7 @@ type Params_RubricVotes_v0_1_0 {
   clone: ModuleClone!
   adminHatId: BigInt!
   judgeHatId: BigInt!
+  roundAddress: String!
 }
 
 ####################### IMPLEMENTATION SPECIFIC #######################
@@ -209,6 +210,7 @@ type GGApplication {
   postedBy: String!
   lastUpdated: Int!
   totalVoted: BigInt!
+  amountReviewed: Int!
   ggRound: GGApplicationRound!
   votes: [GGApplicationVote!]! @derivedFrom(field: "choice")
 }
