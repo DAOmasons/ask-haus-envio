@@ -30,7 +30,7 @@ HatsAllowList_v0_1_1.Registered.handler(async ({ event, context }) => {
     const application = choiceData[0][1];
 
     context.GGApplication.set({
-      id: `choice-${event.params.choiceId}-${event.srcAddress}`,
+      id: `choice-${event.params.choiceId}`,
       registrar: choiceBytes,
       application,
       validApplication: true,

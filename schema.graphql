@@ -197,6 +197,7 @@ type GGApplicationVote {
   id: ID!
   createdAt: Int!
   amount: BigInt!
+  reviewer: String!
   feedback: String!
   validFeedback: Boolean!
   choice: GGApplication!
