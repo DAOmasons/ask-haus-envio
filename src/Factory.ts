@@ -3,6 +3,7 @@ import { addTransaction } from './utils/sync';
 import {
   isAskHausContest,
   isAskHausPoll,
+  isGGApplicationVote,
   isImpl,
   Module,
 } from './utils/dynamicIndexing';
@@ -110,7 +111,9 @@ FastFactory.ContestCloned.contractRegister(({ event, context }) => {
 
 FastFactory.ContestCloned.handler(async ({ event, context }) => {
   const shouldIndex = isImpl(event.params.filterTag);
+
   if (!shouldIndex) return;
+
   context.RoundClone.set({
     id: event.params.contestAddress,
     roundAddress: event.params.contestAddress,
@@ -132,6 +135,10 @@ FastFactory.ModuleCloned.contractRegister(({ event, context }) => {
     context.addTimedVotes_v0_2_0(event.params.moduleAddress);
   } else if (event.params.moduleName === Module.PrePop_v0_2_0) {
     context.addPrePop_v0_2_0(event.params.moduleAddress);
+  } else if (event.params.moduleName === Module.RubricVotes_v0_1_0) {
+    context.addRubricVotes_v0_1_0(event.params.moduleAddress);
+  } else if (event.params.moduleName === Module.HatsAllowList_v0_1_1) {
+    context.addHatsAllowList_v0_1_1(event.params.moduleAddress);
   }
 });
 
@@ -222,6 +229,7 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
           id: contest.choicesModule_id,
         });
 
+        //
         context.AskHausContest.set({
           id: event.params.filterTag,
           createdAt: event.block.timestamp,
@@ -244,6 +252,27 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       );
       console.log('pointer', pointer);
     }
+  } else if (
+    isGGApplicationVote({
+      filterTag: event.params.filterTag,
+      votesModuleName: event.params.votesModule,
+      pointsModuleName: event.params.pointsModule,
+      choicesModuleName: event.params.choicesModule,
+      contestVersion: event.params.contestVersion,
+    })
+  ) {
+    // TODO: Add validation once UI is ready
+
+    context.GGApplicationRound.set({
+      id: event.params.contestAddress,
+      createdAt: event.block.timestamp,
+      round_id: event.params.contestAddress,
+      votesParams_id: contest.votesModule_id,
+      choicesParams_id: contest.choicesModule_id,
+      postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
+      rubric: contest.mdPointer,
+      validRubric: true,
+    });
   } else {
     context.log.warn('Implementation not indexed');
     // context.log.error(`Params ${event.srcAddress} not found
