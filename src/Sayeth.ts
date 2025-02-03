@@ -2,6 +2,7 @@ import { Sayeth } from 'generated';
 import { Hex } from 'viem';
 import { decodeAbiParameters, parseAbiParameters } from 'viem';
 import { TAG } from './utils/dynamicIndexing';
+import { addTransaction } from './utils/sync';
 
 Sayeth.Say.handler(async ({ event, context }) => {
   try {
@@ -26,7 +27,7 @@ Sayeth.Say.handler(async ({ event, context }) => {
       return;
     }
 
-    context.GGApplicationContent.set({
+    context.AppDraft.set({
       id,
       tag: postTag,
       userAddress: event.params.sender,
@@ -34,5 +35,7 @@ Sayeth.Say.handler(async ({ event, context }) => {
       lastUpdated: event.block.timestamp,
       contentProtocol: protocol,
     });
+
+    addTransaction(event, context);
   } catch (error) {}
 });

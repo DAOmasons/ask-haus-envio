@@ -203,7 +203,7 @@ type GGApplicationVote {
   choice: GGApplication!
 }
 
-type GGApplicationContent {
+type AppDraft {
   id: ID!
   tag: String!
   userAddress: String!
