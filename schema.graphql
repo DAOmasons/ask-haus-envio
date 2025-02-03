@@ -203,6 +203,15 @@ type GGApplicationVote {
   choice: GGApplication!
 }
 
+type AppDraft {
+  id: ID!
+  tag: String!
+  userAddress: String!
+  lastUpdated: Int!
+  contentProtocol: BigInt!
+  json: String!
+}
+
 type GGApplication {
   id: ID!
   registrar: String!

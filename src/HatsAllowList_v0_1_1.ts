@@ -12,6 +12,7 @@ HatsAllowList_v0_1_1.Initialized.handler(async ({ event, context }) => {
 
 HatsAllowList_v0_1_1.Registered.handler(async ({ event, context }) => {
   const choiceModule = await context.ModuleClone.get(event.srcAddress);
+
   if (!choiceModule) {
     context.log.error(`Module ${event.srcAddress} not found`);
     return;
