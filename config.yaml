@@ -1,6 +1,10 @@
 # yaml-language-server: $schema=./node_modules/envio/evm.schema.json
 name: ask-arb-envio
 contracts:
+  - name: Sayeth
+    handler: src/Sayeth.ts
+    events: 
+    - event: Say(address referrer, address sender, address origin, bytes content);
   - name: FastFactory
     handler: src/Factory.ts
     events:
@@ -80,6 +84,8 @@ networks:
     - name: HatsAllowList_v0_1_1
     - name: FastFactory
       address: 0xC75C7d885252d1863C647F30E4d739eC097896b1
+    - name: Sayeth
+      address: 0xacb031d17b49c61FA29fF02edE8f188d968A614D
 # rollback_on_reorg: false
 field_selection:
   transaction_fields:

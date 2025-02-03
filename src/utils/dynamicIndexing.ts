@@ -20,6 +20,10 @@ export enum IndexerKey {
   GGRubricVote = 'TEST_GG_APPLICATION_REVIEW',
 }
 
+export const TAG = {
+  APPLICATION_POST: 'GG_APPLICATION_SUBMIT_TEST',
+};
+
 export const indexerKeys = Object.values(IndexerKey);
 
 export const isImpl = (filterKey: string) => {
