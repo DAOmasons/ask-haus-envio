@@ -205,11 +205,13 @@ type GGApplicationVote {
 
 type AppDraft {
   id: ID!
+  chainId: Int!
   tag: String!
   userAddress: String!
   lastUpdated: Int!
   contentProtocol: BigInt!
   json: String!
+  ipfsHash: String!
 }
 
 type GGApplication {
