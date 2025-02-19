@@ -165,7 +165,7 @@ Sayeth.Say.handler(async ({ event, context }) => {
         return;
       }
     } else {
-      context.log.error(`Referrer ${event.params.referrer} not found`);
+      // context.log.error(`Referrer ${event.params.referrer} not found`);
       return;
     }
   } catch (error) {}
