@@ -32,6 +32,7 @@ export const TAG = {
 
 export enum Role {
   None,
+  System,
   Operator,
   Judge,
   Admin,
