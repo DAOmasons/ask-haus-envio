@@ -212,6 +212,18 @@ type AppDraft {
   contentProtocol: BigInt!
   json: String!
   ipfsHash: String!
+  version: Int!
+  isHistory: Boolean!
+}
+
+type FeedItem {
+  id: ID!
+  topic: String!
+  userAddress: String!
+  role: Int!
+  postType: String!
+  json: String
+  ipfsHash: String
 }
 
 type GGApplication {
