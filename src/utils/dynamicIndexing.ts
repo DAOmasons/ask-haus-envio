@@ -20,13 +20,14 @@ export enum IndexerKey {
   GGRubricVote = 'TEST_GG_APPLICATION_REVIEW',
 }
 
-export const REFERRERS = {
+export const OPEN_REFERRERS = {
   '42161': '0xEF62313BDEF239551682F9f2122f6fc2ac22Fd13',
   '421614': '0xF5cBec63a1D4f99F956AB7777ebEb8d822D45D5b',
 };
 
 export const TAG = {
   APPLICATION_POST: 'GG_APPDRAFT_SUBMIT',
+  APPLICATION_EDIT: 'GG_APPDRAFT_EDIT',
 };
 
 export const indexerKeys = Object.values(IndexerKey);
