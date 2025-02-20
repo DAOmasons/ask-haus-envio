@@ -25,9 +25,15 @@ export const OPEN_REFERRERS: Record<string, string> = {
   '421614': '0xF5cBec63a1D4f99F956AB7777ebEb8d822D45D5b',
 } as const;
 
+export const HATS_REFERRERS: Record<string, string> = {
+  '42161': '0xEE4a919C6Ca25aD2918508F418c52d4209207E52',
+  '421614': '0x1D50c6D6e5d18D33E45968C25e3392a8415adAc3',
+};
+
 export const TAG = {
   APPLICATION_POST: 'GG_APPDRAFT_SUBMIT',
   APPLICATION_EDIT: 'GG_APPDRAFT_EDIT',
+  APPLICATION_COMMENT: 'GG_APPDRAFT_COMMENT',
 };
 
 export enum Role {
