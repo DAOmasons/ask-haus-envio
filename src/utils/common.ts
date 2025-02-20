@@ -1,4 +1,4 @@
-function generateRandomId(
+export function generateRandomId(
   length: number = 16,
   chars: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'
 ): string {
@@ -13,3 +13,6 @@ function generateRandomId(
   // Combine timestamp prefix with random string and ensure it's exactly the requested length
   return (timestamp + id).slice(0, length);
 }
+
+export const truncateAddr = (address: string) =>
+  address.slice(0, 6) + '...' + address.slice(-4);

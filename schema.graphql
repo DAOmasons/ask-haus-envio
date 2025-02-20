@@ -220,7 +220,7 @@ type FeedItem {
   id: ID!
   topic: String!
   userAddress: String!
-  role: Int!
+  createdAt: Int!
   postType: String!
   json: String
   ipfsHash: String

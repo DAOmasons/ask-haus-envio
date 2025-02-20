@@ -1,6 +1,7 @@
 import { eventLog, handlerContext, Sayeth_Say_eventArgs } from 'generated';
 import { addTransaction } from './sync';
 import { Role, TAG } from './dynamicIndexing';
+import { generateRandomId, truncateAddr } from './common';
 
 export const FILTERED_IDS = [
   '0xa06d98c78191d02f8d41d86c1fc0776c373f4eddb4622442a43ee7ec5d38473f',
@@ -53,6 +54,19 @@ export const handleAppDraftPost = async ({
     contentProtocol: protocol,
     version: 0,
     isHistory: false,
+  });
+
+  context.FeedItem.set({
+    id: generateRandomId(),
+    topic: id,
+    userAddress: event.params.sender,
+    createdAt: event.block.timestamp,
+    postType: TAG.APPLICATION_POST,
+    json: JSON.stringify({
+      title: 'Application Created',
+      body: `Ship Operator ${truncateAddr(event.params.sender)} has created a new application.`,
+    }),
+    ipfsHash: undefined,
   });
 
   addTransaction(event, context);
