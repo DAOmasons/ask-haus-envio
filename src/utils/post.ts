@@ -1,6 +1,6 @@
 import { eventLog, handlerContext, Sayeth_Say_eventArgs } from 'generated';
 import { addTransaction } from './sync';
-import { Role, TAG } from './dynamicIndexing';
+import { CURRENT_ROUND, Role, TAG } from './dynamicIndexing';
 import { generateRandomId, truncateAddr } from './common';
 
 export const FILTERED_IDS = [
@@ -45,6 +45,7 @@ export const handleAppDraftPost = async ({
 
   context.AppDraft.set({
     id: `${id}-${0}`,
+    rootId: id,
     chainId: event.chainId,
     tag: postTag,
     userAddress: event.params.sender,
@@ -54,6 +55,12 @@ export const handleAppDraftPost = async ({
     contentProtocol: protocol,
     version: 0,
     isHistory: false,
+    approvedRounds: [],
+  });
+
+  context.CurrentDraftVersion.set({
+    id,
+    version: 0,
   });
 
   context.FeedItem.set({
@@ -109,18 +116,24 @@ export const handleAppDraftEdit = async ({
     return;
   }
 
-  const newVersion = prevDraft.version + 1;
-
   // create a new draft with the updated content
-
-  const ogId = prevDraft.id.split('-')[0];
+  const newVersion = prevDraft.version + 1;
+  const rootId = prevDraft.id.split('-')[0];
 
   context.AppDraft.set({
     ...prevDraft,
-    id: `${ogId}-${newVersion}`,
+    id: `${rootId}-${newVersion}`,
     json: onchainStorage,
     ipfsHash: pointer,
     lastUpdated: event.block.timestamp,
+    version: newVersion,
+    approvedRounds: prevDraft.approvedRounds.filter(
+      (round) => round !== CURRENT_ROUND
+    ),
+  });
+
+  context.CurrentDraftVersion.set({
+    id: rootId,
     version: newVersion,
   });
 

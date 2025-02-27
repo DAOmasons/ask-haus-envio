@@ -17,7 +17,7 @@ export enum Module {
 export enum IndexerKey {
   PollV0 = 'askhaus-poll-v0',
   ContestV0 = 'askhaus-contest-v0',
-  GGRubricVote = 'TEST_GG_APPLICATION_REVIEW',
+  GGRubricVote = 'GG_APPLICATION_JUDGE_VOTE',
 }
 
 export const OPEN_REFERRERS: Record<string, string> = {
@@ -35,6 +35,8 @@ export const TAG = {
   APPLICATION_EDIT: 'GG_APPDRAFT_EDIT',
   APPLICATION_COMMENT: 'GG_APPDRAFT_COMMENT',
 };
+
+export const CURRENT_ROUND = 'GG_23';
 
 export enum Role {
   None,

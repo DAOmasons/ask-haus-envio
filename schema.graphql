@@ -205,6 +205,7 @@ type GGApplicationVote {
 
 type AppDraft {
   id: ID!
+  rootId: String!
   chainId: Int!
   tag: String!
   userAddress: String!
@@ -214,6 +215,12 @@ type AppDraft {
   ipfsHash: String!
   version: Int!
   isHistory: Boolean!
+  approvedRounds: [String!]!
+}
+
+type CurrentDraftVersion {
+  id: ID!
+  version: Int!
 }
 
 type FeedItem {
@@ -229,8 +236,7 @@ type FeedItem {
 type GGApplication {
   id: ID!
   registrar: String!
-  application: String!
-  validApplication: Boolean!
+  application: AppDraft!
   postedBy: String!
   lastUpdated: Int!
   totalVoted: BigInt!

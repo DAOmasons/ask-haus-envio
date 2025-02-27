@@ -17,6 +17,7 @@ Contest_v0_2_0.ContestInitialized.handler(async ({ event, context }) => {
     totalVoted: 0n,
   });
 });
+//
 
 Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
   await Promise.all(
