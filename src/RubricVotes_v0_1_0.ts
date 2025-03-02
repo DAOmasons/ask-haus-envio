@@ -2,6 +2,8 @@ import { RubricVotes_v0_1_0 } from 'generated';
 import { addTransaction } from './utils/sync';
 import { generateRandomId, truncateAddr } from './utils/common';
 import { TAG } from './utils/dynamicIndexing';
+import { formatEther } from 'viem';
+import { injectLocalLink } from './utils/injection';
 
 RubricVotes_v0_1_0.Initialized.handler(async ({ event, context }) => {
   context.Params_RubricVotes_v0_1_0.set({
@@ -47,7 +49,7 @@ RubricVotes_v0_1_0.VoteCast.handler(async ({ event, context }) => {
     postType: TAG.APPLICATION_VOTE,
     json: JSON.stringify({
       title: 'Application Reviewed',
-      body: `This application has been reviewed by ${truncateAddr(`${event.transaction.from || '0xBr0k3n@ddr3ss'}`)}`,
+      body: `This application has been reviewed with a score of ${formatEther(event.params.amount * 100n)}%. See the detailed review ${injectLocalLink({ label: 'here', to: `/review/vote-${choice.id}-${event.transaction.from}` })}.`,
     }),
     ipfsHash: undefined,
   });
