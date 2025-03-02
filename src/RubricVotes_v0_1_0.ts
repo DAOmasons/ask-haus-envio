@@ -1,5 +1,7 @@
 import { RubricVotes_v0_1_0 } from 'generated';
 import { addTransaction } from './utils/sync';
+import { generateRandomId, truncateAddr } from './utils/common';
+import { TAG } from './utils/dynamicIndexing';
 
 RubricVotes_v0_1_0.Initialized.handler(async ({ event, context }) => {
   context.Params_RubricVotes_v0_1_0.set({
@@ -35,6 +37,19 @@ RubricVotes_v0_1_0.VoteCast.handler(async ({ event, context }) => {
   context.GGApplication.set({
     ...choice,
     amountReviewed: choice.amountReviewed + 1,
+  });
+
+  context.FeedItem.set({
+    id: generateRandomId(),
+    topic: choice.id,
+    userAddress: event.transaction.from || '0xBr0k3n@ddr3ss',
+    createdAt: event.block.timestamp,
+    postType: TAG.APPLICATION_VOTE,
+    json: JSON.stringify({
+      title: 'Application Reviewed',
+      body: `This application has been reviewed by ${truncateAddr(`${event.transaction.from || '0xBr0k3n@ddr3ss'}`)}`,
+    }),
+    ipfsHash: undefined,
   });
 
   addTransaction(event, context);
