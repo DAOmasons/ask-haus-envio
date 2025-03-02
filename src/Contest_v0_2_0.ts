@@ -17,6 +17,7 @@ Contest_v0_2_0.ContestInitialized.handler(async ({ event, context }) => {
     totalVoted: 0n,
   });
 });
+//
 
 Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
   await Promise.all(
@@ -67,6 +68,22 @@ Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
     voter: event.params.voter,
     totalVoted: event.params.totalAmount,
     comment: undefined,
+  });
+
+  addTransaction(event, context);
+});
+
+Contest_v0_2_0.ContestStatusChanged.handler(async ({ event, context }) => {
+  const round = await context.Round.get(event.srcAddress);
+
+  if (!round) {
+    context.log.error(`Round ${event.srcAddress} not found`);
+    return;
+  }
+
+  context.Round.set({
+    ...round,
+    contestStatus: event.params.status,
   });
 
   addTransaction(event, context);

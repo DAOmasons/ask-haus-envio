@@ -261,8 +261,6 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       contestVersion: event.params.contestVersion,
     })
   ) {
-    // TODO: Add validation once UI is ready
-
     context.GGApplicationRound.set({
       id: event.params.contestAddress,
       createdAt: event.block.timestamp,
