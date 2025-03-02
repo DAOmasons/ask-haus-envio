@@ -1,6 +1,8 @@
 import { HatsAllowList_v0_1_1 } from 'generated';
-import { CURRENT_ROUND, IndexerKey } from './utils/dynamicIndexing';
+import { CURRENT_ROUND, IndexerKey, TAG } from './utils/dynamicIndexing';
 import { addTransaction } from './utils/sync';
+import { generateRandomId, truncateAddr } from './utils/common';
+import { injectLocalLink } from './utils/injection';
 
 HatsAllowList_v0_1_1.Initialized.handler(async ({ event, context }) => {
   context.Params_HAL_v0_1_1.set({
@@ -61,6 +63,19 @@ HatsAllowList_v0_1_1.Registered.handler(async ({ event, context }) => {
     context.AppDraft.set({
       ...draft,
       approvedRounds: [...draft.approvedRounds, CURRENT_ROUND],
+    });
+
+    context.FeedItem.set({
+      id: generateRandomId(),
+      topic: event.params.choiceId,
+      userAddress: event.transaction.from || '0xBr0k3n@ddr3ss',
+      createdAt: event.block.timestamp,
+      postType: TAG.APPLICATION_APPROVE,
+      json: JSON.stringify({
+        title: 'Application Approved',
+        body: `Admin ${truncateAddr(event.transaction.from || 'Error')} has approved the application. ${injectLocalLink({ to: `/ship/${event.params.choiceId}`, label: 'Click here' })} to view this applicant's Ship Page`,
+      }),
+      ipfsHash: draft.ipfsHash,
     });
 
     addTransaction(event, context);

@@ -2,6 +2,7 @@ import { eventLog, handlerContext, Sayeth_Say_eventArgs } from 'generated';
 import { addTransaction } from './sync';
 import { CURRENT_ROUND, Role, TAG } from './dynamicIndexing';
 import { generateRandomId, truncateAddr } from './common';
+import { injectLocalLink } from './injection';
 
 export const FILTERED_IDS = [
   '0xa06d98c78191d02f8d41d86c1fc0776c373f4eddb4622442a43ee7ec5d38473f',
@@ -143,18 +144,18 @@ export const handleAppDraftEdit = async ({
     isHistory: true,
   });
 
-  //   context.FeedItem.set({
-  //     id: generateRandomId(),
-  //     topic: ogId,
-  //     userAddress: event.params.sender,
-  //     role: Role.System,
-  //     postType: TAG.APPLICATION_EDIT,
-  //     json: JSON.stringify({
-  //       title: 'Application Edited',
-  //       body: `This application has been edited by ${event.params.sender}. You can view the updated application at ${}`,
-  //     }),
-  //     ipfsHash: undefined,
-  //   });
+  context.FeedItem.set({
+    id: generateRandomId(),
+    topic: rootId,
+    userAddress: event.params.sender,
+    createdAt: event.block.timestamp,
+    postType: TAG.APPLICATION_EDIT,
+    json: JSON.stringify({
+      title: 'Application Edited',
+      body: `This application has been edited by ${truncateAddr(event.params.sender)}. ${injectLocalLink({ to: `/view-draft/${rootId}-${prevDraft.version}`, label: 'Click Here' })} to view the previous draft (Version: ${prevDraft.version}).`,
+    }),
+    ipfsHash: undefined,
+  });
 
   addTransaction(event, context);
 };
