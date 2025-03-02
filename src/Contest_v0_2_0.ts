@@ -72,3 +72,19 @@ Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
 
   addTransaction(event, context);
 });
+
+Contest_v0_2_0.ContestStatusChanged.handler(async ({ event, context }) => {
+  const round = await context.Round.get(event.srcAddress);
+
+  if (!round) {
+    context.log.error(`Round ${event.srcAddress} not found`);
+    return;
+  }
+
+  context.Round.set({
+    ...round,
+    contestStatus: event.params.status,
+  });
+
+  addTransaction(event, context);
+});

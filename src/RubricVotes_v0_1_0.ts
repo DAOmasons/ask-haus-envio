@@ -22,12 +22,10 @@ RubricVotes_v0_1_0.VoteCast.handler(async ({ event, context }) => {
     amount: event.params.amount,
     feedback: event.params.reason[1],
     validFeedback: true,
-    choice_id: `choice-${event.params.choiceId}`,
+    choice_id: event.params.choiceId,
   });
 
-  const choice = await context.GGApplication.get(
-    `choice-${event.params.choiceId}`
-  );
+  const choice = await context.GGApplication.get(event.params.choiceId);
 
   if (!choice) {
     context.log.error(`Choice ${event.params.choiceId} not found`);
