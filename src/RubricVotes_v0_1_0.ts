@@ -19,6 +19,15 @@ RubricVotes_v0_1_0.VoteCast.handler(async ({ event, context }) => {
   // TODO: Create checker to see if vote already exists
   // If so, update vote instead of writing.
 
+  const vote = await context.GGApplicationVote.get(
+    `vote-${event.params.choiceId}-${event.transaction.from}`
+  );
+
+  if (vote) {
+    context.log.warn(`Vote ${event.params.choiceId} already exists`);
+    return;
+  }
+
   context.GGApplicationVote.set({
     id: `vote-${event.params.choiceId}-${event.transaction.from || 'ERROR'}`,
     createdAt: event.block.timestamp,
