@@ -1,6 +1,6 @@
 import { RubricVotes_v0_1_0 } from 'generated';
 import { addTransaction } from './utils/sync';
-import { generateRandomId, truncateAddr } from './utils/common';
+import { generateRandomId } from './utils/common';
 import { TAG } from './utils/dynamicIndexing';
 import { formatEther } from 'viem';
 import { injectLocalLink } from './utils/injection';
@@ -24,7 +24,9 @@ RubricVotes_v0_1_0.VoteCast.handler(async ({ event, context }) => {
   );
 
   if (vote) {
-    context.log.warn(`Vote ${event.params.choiceId} already exists`);
+    context.log.warn(
+      `Vote ${event.params.choiceId} already exists. TX: ${event.transaction.hash}`
+    );
     return;
   }
 
@@ -48,6 +50,7 @@ RubricVotes_v0_1_0.VoteCast.handler(async ({ event, context }) => {
   context.GGApplication.set({
     ...choice,
     amountReviewed: choice.amountReviewed + 1,
+    lastUpdated: event.block.timestamp,
   });
 
   context.FeedItem.set({
