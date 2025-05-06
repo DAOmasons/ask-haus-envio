@@ -37,11 +37,21 @@ PrePop_v0_2_0.Registered.handler(async ({ event, context }) => {
       return;
     }
 
-    context.GGShipChoice.set({
-      id: event.params.choiceId,
-      totalVoted: 0n,
-      publicVote_id: event.srcAddress,
-      application_id: event.params.choiceId,
+    context.BasicChoice.set({
+      id: `choice-${event.params.choiceId}`,
+      choiceId: event.params.choiceId,
+      title: '',
+      color: '',
+      description: undefined,
+      link: undefined,
+      bytes,
+      isValid: true,
+      isActive,
+      registrar,
+      basicChoices_id: event.srcAddress,
+      postedAt: event.block.timestamp,
+      amountVoted: 0n,
+      postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
     });
   } else if (protocol === 6969420n) {
     const validated = basicChoiceSchema.safeParse(JSON.parse(pointer));

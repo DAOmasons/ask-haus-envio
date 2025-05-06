@@ -66,7 +66,7 @@ contracts:
   - name: TimedVotes_v1_0_0
     handler: src/TimedVotes_v1_0_0.ts
     events:
-    - event: Initialized(address contest, uint256 duration)
+    - event: Initialized(address contest, uint256 duration, uint8 timerType, uint256 adminHatId);
     - event: VotingStarted(uint256 startTime, uint256 endTime)
     - event: VoteCast(address indexed voter, bytes32 choiceId, uint256 amount, (uint256,string) _reason)
     - event: VoteRetracted(address indexed voter, bytes32 choiceId, uint256 amount, (uint256,string) _reason)  
