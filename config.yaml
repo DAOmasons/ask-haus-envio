@@ -59,6 +59,17 @@ contracts:
     - event: Initialized(address contest, address hats, uint256 hatId)
     - event: Registered(bytes32 choiceId, ((uint256, string), bytes, bool) choiceData, address contest)
     - event: Removed(bytes32 choiceId, address contest)
+  - name: MerklePoints_v0_2_0
+    handler: src/MerklePoints_v0_2_0.ts
+    events:
+    - event: Initialized(address contest, bytes32 merkleRoot)
+  - name: TimedVotes_v1_0_0
+    handler: src/TimedVotes_v1_0_0.ts
+    events:
+    - event: Initialized(address contest, uint256 duration)
+    - event: VotingStarted(uint256 startTime, uint256 endTime)
+    - event: VoteCast(address indexed voter, bytes32 choiceId, uint256 amount, (uint256,string) _reason)
+    - event: VoteRetracted(address indexed voter, bytes32 choiceId, uint256 amount, (uint256,string) _reason)  
 networks:
 - id: 42161
   start_block: 263580570

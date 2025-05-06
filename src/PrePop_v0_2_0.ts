@@ -25,7 +25,25 @@ PrePop_v0_2_0.Registered.handler(async ({ event, context }) => {
     choiceData: [[protocol, pointer], bytes, isActive, registrar],
   } = event.params;
 
-  if (protocol === 6969420n) {
+  if (protocol === 0n) {
+    return;
+  } else if (protocol === 6665n) {
+    // GG <> GS Specific implementation
+
+    const application = await context.GGApplication.get(event.params.choiceId);
+
+    if (!application) {
+      context.log.warn(`GG Application ${event.params.choiceId} not found`);
+      return;
+    }
+
+    context.GGShipChoice.set({
+      id: event.params.choiceId,
+      totalVoted: 0n,
+      publicVote_id: event.srcAddress,
+      application_id: event.params.choiceId,
+    });
+  } else if (protocol === 6969420n) {
     const validated = basicChoiceSchema.safeParse(JSON.parse(pointer));
     if (validated.success) {
       const { title, color, description, link } = validated.data;

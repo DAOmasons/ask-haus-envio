@@ -245,6 +245,13 @@ type GGApplication {
   votes: [GGApplicationVote!]! @derivedFrom(field: "choice")
 }
 
+type GGShipChoice {
+  id: ID!
+  totalVoted: BigInt!
+  publicVote: GGPublicRound!
+  application: AppDraft!
+}
+
 type GGApplicationRound {
   id: ID!
   createdAt: Int!
@@ -255,4 +262,14 @@ type GGApplicationRound {
   rubric: String!
   validRubric: Boolean!
   applications: [GGApplication!]! @derivedFrom(field: "ggRound")
+}
+
+type GGPublicRound {
+  id: ID!
+  createdAt: Int!
+  round: Round!
+  # votesParams: !
+  # choicesParams: Params_HAL_v0_1_1!
+  postedBy: String!
+  ships: [GGShipChoice!]! @derivedFrom(field: "publicVote")
 }

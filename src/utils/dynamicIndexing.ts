@@ -12,12 +12,15 @@ export enum Module {
   BaalPoints_v0_2_0 = 'BaalPoints_v0.2.0',
   BaalGate_v0_2_0 = 'BaalGate_v0.2.0',
   PrePop_v0_2_0 = 'PrePop_v0.2.0',
+  MerklePoints_v0_2_0 = 'MerklePoints_v0.2.0',
+  TimedVotes_v1_0_0 = 'TimedVotes_v1.0.0',
 }
 
 export enum IndexerKey {
   PollV0 = 'askhaus-poll-v0',
   ContestV0 = 'askhaus-contest-v0',
   GGRubricVote = 'GG_APPLICATION_JUDGE_VOTE',
+  GGPublicVote = 'GG_APPLICATION_PUBLIC_VOTE',
 }
 
 export const OPEN_REFERRERS: Record<string, string> = {
@@ -117,5 +120,27 @@ export const isGGApplicationVote = ({
     votesModuleName === Module.RubricVotes_v0_1_0 &&
     pointsModuleName === Module.EmptyPoints_v0_1_0 &&
     choicesModuleName === Module.HatsAllowList_v0_1_1
+  );
+};
+
+export const isGGPublicVote = ({
+  filterTag,
+  votesModuleName,
+  pointsModuleName,
+  choicesModuleName,
+  contestVersion,
+}: {
+  filterTag: string;
+  votesModuleName: string;
+  pointsModuleName: string;
+  choicesModuleName: string;
+  contestVersion: string;
+}) => {
+  return (
+    filterTag.includes(IndexerKey.GGRubricVote) &&
+    contestVersion === ContestVersion.v0_2_1 &&
+    votesModuleName === Module.TimedVotes_v1_0_0 &&
+    pointsModuleName === Module.MerklePoints_v0_2_0 &&
+    choicesModuleName === Module.PrePop_v0_2_0
   );
 };
