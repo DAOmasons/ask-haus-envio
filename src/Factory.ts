@@ -4,6 +4,7 @@ import {
   isAskHausContest,
   isAskHausPoll,
   isGGApplicationVote,
+  isGGPublicVote,
   isImpl,
   Module,
 } from './utils/dynamicIndexing';
@@ -270,6 +271,24 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
       rubric: contest.mdPointer,
       validRubric: true,
+    });
+  } else if (
+    isGGPublicVote({
+      filterTag: event.params.filterTag,
+      votesModuleName: event.params.votesModule,
+      pointsModuleName: event.params.pointsModule,
+      choicesModuleName: event.params.choicesModule,
+      contestVersion: event.params.contestVersion,
+    })
+  ) {
+    context.GGPublicRound.set({
+      id: event.params.contestAddress,
+      createdAt: event.block.timestamp,
+      round_id: event.params.contestAddress,
+      votesParams_id: contest.votesModule_id,
+      choicesParams_id: contest.choicesModule_id,
+      postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
+      basicChoices_id: contest.choicesModule_id,
     });
   } else {
     context.log.warn('Implementation not indexed');

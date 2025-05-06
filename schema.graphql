@@ -279,8 +279,8 @@ type GGPublicRound {
   id: ID!
   createdAt: Int!
   round: Round!
-  # votesParams: !
-  # choicesParams: Params_HAL_v0_1_1!
+  votesParams: Params_TimedVotes_v1_0_0!
+  choicesParams: Params_PrePop_v0_2_0!
   postedBy: String!
-  ships: [GGShipChoice!]! @derivedFrom(field: "publicVote")
+  basicChoices: BasicChoices!
 }

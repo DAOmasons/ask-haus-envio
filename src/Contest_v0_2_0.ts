@@ -48,13 +48,14 @@ Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
     })
   );
 
-  //
   const round = await context.Round.get(event.srcAddress);
 
   if (!round) {
     context.log.error(`Round ${event.srcAddress} not found`);
     return;
   }
+
+  const isGG = round.mdProtocol === 6665n;
 
   context.Round.set({
     ...round,
@@ -67,7 +68,7 @@ Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
     round_id: event.srcAddress,
     voter: event.params.voter,
     totalVoted: event.params.totalAmount,
-    comment: undefined,
+    comment: isGG ? event.params.metadata[1] : undefined,
   });
 
   addTransaction(event, context);
