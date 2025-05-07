@@ -81,6 +81,8 @@ networks:
     - name: PrePop_v0_2_0
     - name: RubricVotes_v0_1_0
     - name: HatsAllowList_v0_1_1
+    - name: TimedVotes_v1_0_0
+    - name: MerklePoints_v0_2_0
     - name: FastFactory
       address: 0x72429C2392d79458c411BC5DecEb8cCd28530BF0
     - name: Sayeth
@@ -95,6 +97,8 @@ networks:
     - name: PrePop_v0_2_0
     - name: RubricVotes_v0_1_0
     - name: HatsAllowList_v0_1_1
+    - name: TimedVotes_v1_0_0
+    - name: MerklePoints_v0_2_0
     - name: FastFactory
       address: 0xC75C7d885252d1863C647F30E4d739eC097896b1
     - name: Sayeth

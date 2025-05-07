@@ -135,6 +135,12 @@ type Params_TimedVotes_v1_0_0 {
   round: String!
 }
 
+type Params_MerklePoints_v0_2_0 {
+  id: ID!
+  clone: ModuleClone!
+  merkleRoot: String!
+}
+
 type Params_HAL_v0_1_1 {
   id: ID!
   clone: ModuleClone!
