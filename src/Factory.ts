@@ -161,6 +161,20 @@ FastFactory.ModuleCloned.handler(async ({ event, context }) => {
 FastFactory.ContestBuilt.handler(async ({ event, context }) => {
   const shouldIndex = isImpl(event.params.filterTag);
 
+  // if (event.params.filterTag) {
+  //   context.log.info(`
+
+  //       event.params.contestAddress: ${event.params.contestAddress}
+  //       event.params.filterTag: ${event.params.filterTag}
+  //       event.params.votesModule: ${event.params.votesModule}
+  //       event.params.pointsModule: ${event.params.pointsModule}
+  //       event.params.choicesModule: ${event.params.choicesModule}
+  //       event.params.contestVersion: ${event.params.contestVersion}
+  //       event.params.executionModule: ${event.params.executionModule}
+
+  //     `);
+  // }
+
   if (!shouldIndex) return;
 
   const contest = await context.Round.get(event.params.contestAddress);
@@ -281,6 +295,8 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       contestVersion: event.params.contestVersion,
     })
   ) {
+    context.log.info('GGPublicVote detected');
+
     context.GGPublicRound.set({
       id: event.params.contestAddress,
       createdAt: event.block.timestamp,

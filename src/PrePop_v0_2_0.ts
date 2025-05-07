@@ -30,12 +30,12 @@ PrePop_v0_2_0.Registered.handler(async ({ event, context }) => {
   } else if (protocol === 6665n) {
     // GG <> GS Specific implementation
 
-    const application = await context.GGApplication.get(event.params.choiceId);
+    // // const application = await context.GGApplication.get(event.params.choiceId);
 
-    if (!application) {
-      context.log.warn(`GG Application ${event.params.choiceId} not found`);
-      return;
-    }
+    // if (!application) {
+    //   context.log.warn(`GG Application ${event.params.choiceId} not found`);
+    //   return;
+    // }
 
     context.BasicChoice.set({
       id: `choice-${event.params.choiceId}`,
