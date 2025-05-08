@@ -16,6 +16,12 @@ export enum Module {
   TimedVotes_v1_0_0 = 'TimedVotes_v1.0.0',
 }
 
+export enum TimerType {
+  Auto, // timer starts automatically on init
+  Lazy, // timer starts from an external contract call, usually finalize choices in choice module
+  Preset, // preset time start at advance point in time (used for continuous and when choices are also timed)
+}
+
 export enum IndexerKey {
   PollV0 = 'askhaus-poll-v0',
   ContestV0 = 'askhaus-contest-v0',
@@ -137,7 +143,7 @@ export const isGGPublicVote = ({
   contestVersion: string;
 }) => {
   return (
-    filterTag.includes(IndexerKey.GGRubricVote) &&
+    filterTag.includes(IndexerKey.GGPublicVote) &&
     contestVersion === ContestVersion.v0_2_1 &&
     votesModuleName === Module.TimedVotes_v1_0_0 &&
     pointsModuleName === Module.MerklePoints_v0_2_0 &&

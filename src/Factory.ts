@@ -140,6 +140,10 @@ FastFactory.ModuleCloned.contractRegister(({ event, context }) => {
     context.addRubricVotes_v0_1_0(event.params.moduleAddress);
   } else if (event.params.moduleName === Module.HatsAllowList_v0_1_1) {
     context.addHatsAllowList_v0_1_1(event.params.moduleAddress);
+  } else if (event.params.moduleName === Module.TimedVotes_v1_0_0) {
+    context.addTimedVotes_v1_0_0(event.params.moduleAddress);
+  } else if (event.params.moduleName === Module.MerklePoints_v0_2_0) {
+    context.addMerklePoints_v0_2_0(event.params.moduleAddress);
   }
 });
 
@@ -160,20 +164,6 @@ FastFactory.ModuleCloned.handler(async ({ event, context }) => {
 
 FastFactory.ContestBuilt.handler(async ({ event, context }) => {
   const shouldIndex = isImpl(event.params.filterTag);
-
-  // if (event.params.filterTag) {
-  //   context.log.info(`
-
-  //       event.params.contestAddress: ${event.params.contestAddress}
-  //       event.params.filterTag: ${event.params.filterTag}
-  //       event.params.votesModule: ${event.params.votesModule}
-  //       event.params.pointsModule: ${event.params.pointsModule}
-  //       event.params.choicesModule: ${event.params.choicesModule}
-  //       event.params.contestVersion: ${event.params.contestVersion}
-  //       event.params.executionModule: ${event.params.executionModule}
-
-  //     `);
-  // }
 
   if (!shouldIndex) return;
 
@@ -265,7 +255,6 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       context.log.error(
         `Onchain metadata validation failed for contest: ${event.srcAddress}`
       );
-      console.log('pointer', pointer);
     }
   } else if (
     isGGApplicationVote({
@@ -295,8 +284,6 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       contestVersion: event.params.contestVersion,
     })
   ) {
-    context.log.info('GGPublicVote detected');
-
     context.GGPublicRound.set({
       id: event.params.contestAddress,
       createdAt: event.block.timestamp,
@@ -305,6 +292,7 @@ FastFactory.ContestBuilt.handler(async ({ event, context }) => {
       choicesParams_id: contest.choicesModule_id,
       postedBy: event.transaction.from || '0xBr0k3n@ddr3ss',
       basicChoices_id: contest.choicesModule_id,
+      pointsParams_id: contest.pointsModule_id,
     });
   } else {
     context.log.warn('Implementation not indexed');

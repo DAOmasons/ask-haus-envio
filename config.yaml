@@ -67,7 +67,7 @@ contracts:
     handler: src/TimedVotes_v1_0_0.ts
     events:
     - event: Initialized(address contest, uint256 duration, uint8 timerType, uint256 adminHatId);
-    - event: VotingStarted(uint256 startTime, uint256 endTime)
+    - event: TimerSet(uint256 startTime, uint256 endTime)
     - event: VoteCast(address indexed voter, bytes32 choiceId, uint256 amount, (uint256,string) _reason)
     - event: VoteRetracted(address indexed voter, bytes32 choiceId, uint256 amount, (uint256,string) _reason)  
 networks:
@@ -104,6 +104,7 @@ networks:
     - name: Sayeth
       address: 0xacb031d17b49c61FA29fF02edE8f188d968A614D
 # rollback_on_reorg: false
+unordered_multichain_mode: true
 field_selection:
   transaction_fields:
     - "from"

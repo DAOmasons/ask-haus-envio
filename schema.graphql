@@ -287,6 +287,7 @@ type GGPublicRound {
   round: Round!
   votesParams: Params_TimedVotes_v1_0_0!
   choicesParams: Params_PrePop_v0_2_0!
+  pointsParams: Params_MerklePoints_v0_2_0!
   postedBy: String!
   basicChoices: BasicChoices!
 }

@@ -1,23 +1,35 @@
 import { TimedVotes_v1_0_0 } from 'generated';
+import { TimerType } from './utils/dynamicIndexing';
 
 TimedVotes_v1_0_0.Initialized.handler(async ({ event, context }) => {
+  const startTime =
+    Number(event.params.timerType) === TimerType.Auto
+      ? BigInt(event.block.number)
+      : undefined;
+
+  const endTime =
+    Number(event.params.timerType) === TimerType.Auto
+      ? BigInt(event.block.number) + event.params.duration
+      : undefined;
+
   context.Params_TimedVotes_v1_0_0.set({
     id: event.srcAddress,
     clone_id: event.srcAddress,
     duration: event.params.duration,
-    startTime: undefined,
-    endTime: undefined,
+    startTime,
+    endTime,
     adminHatId: event.params.adminHatId,
     timerType: event.params.timerType,
     round: event.params.contest,
   });
 });
 
-TimedVotes_v1_0_0.VotingStarted.handler(async ({ event, context }) => {
+TimedVotes_v1_0_0.TimerSet.handler(async ({ event, context }) => {
   const params = await context.Params_TimedVotes_v1_0_0.get(event.srcAddress);
 
   if (!params) {
-    context.log.error(`Params ${event.srcAddress} not found`);
+    // not logging this because this handler does not emit before init if timerType is Auto
+    // context.log.error(`Params ${event.srcAddress} not found`);
     return;
   }
 
