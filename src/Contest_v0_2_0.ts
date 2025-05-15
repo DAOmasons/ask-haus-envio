@@ -1,5 +1,6 @@
 import { Contest_v0_2_0 } from 'generated';
 import { addTransaction } from './utils/sync';
+import { GG_MD_POINTER } from './utils/dynamicIndexing';
 
 Contest_v0_2_0.ContestInitialized.handler(async ({ event, context }) => {
   context.Round.set({
@@ -48,13 +49,14 @@ Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
     })
   );
 
-  //
   const round = await context.Round.get(event.srcAddress);
 
   if (!round) {
     context.log.error(`Round ${event.srcAddress} not found`);
     return;
   }
+
+  const isGG = event.params.metadata[0] === GG_MD_POINTER;
 
   context.Round.set({
     ...round,
@@ -67,7 +69,7 @@ Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
     round_id: event.srcAddress,
     voter: event.params.voter,
     totalVoted: event.params.totalAmount,
-    comment: undefined,
+    comment: isGG ? event.params.metadata[1] : undefined,
   });
 
   addTransaction(event, context);
