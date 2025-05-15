@@ -49,6 +49,8 @@ export const TAG = {
 
 export const CURRENT_ROUND = 'GG_23';
 
+export const GG_MD_POINTER = 6665n;
+
 export enum Role {
   None,
   System,

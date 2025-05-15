@@ -1,5 +1,6 @@
 import { Contest_v0_2_0 } from 'generated';
 import { addTransaction } from './utils/sync';
+import { GG_MD_POINTER } from './utils/dynamicIndexing';
 
 Contest_v0_2_0.ContestInitialized.handler(async ({ event, context }) => {
   context.Round.set({
@@ -55,7 +56,7 @@ Contest_v0_2_0.BatchVote.handler(async ({ event, context }) => {
     return;
   }
 
-  const isGG = round.mdProtocol === 6665n;
+  const isGG = event.params.metadata[0] === GG_MD_POINTER;
 
   context.Round.set({
     ...round,
